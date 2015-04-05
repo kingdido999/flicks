@@ -11,12 +11,18 @@ connection.query('CREATE DATABASE ' + dbconfig.database);
 
 connection.query('\
 CREATE TABLE `' + dbconfig.database + '`.`' + dbconfig.users_table + '` ( \
-    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT, \
-    `username` VARCHAR(20) NOT NULL, \
-    `password` CHAR(60) NOT NULL, \
-        PRIMARY KEY (`id`), \
-    UNIQUE INDEX `id_UNIQUE` (`id` ASC), \
-    UNIQUE INDEX `username_UNIQUE` (`username` ASC) \
+    id                INT           NOT NULL AUTO_INCREMENT,  \
+    email             VARCHAR(255)  NOT NULL UNIQUE,          \
+    password          VARCHAR(255)  NOT NULL,                 \
+    firstname         VARCHAR(255),                           \
+    lastname          VARCHAR(255),                           \
+    gender            VARCHAR(20),                            \
+    date_of_birth     DATE,                                   \
+    date_of_creation  TIMESTAMP     DEFAULT CURRENT_TIMESTAMP,\
+    num_albums        INT           DEFAULT 0,                \
+    num_friends       INT           DEFAULT 0,                \
+    num_comments      INT           DEFAULT 0,                \
+    PRIMARY KEY(id)                                           \
 )');
 
 console.log('Success: Database Created!')

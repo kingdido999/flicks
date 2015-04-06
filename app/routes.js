@@ -72,15 +72,44 @@ module.exports = function(app, passport) {
 	// =====================================
 	// UPLOAD ==============================
 	// =====================================
-	// app.post('/upload', function(req, res) {
-	//
-	// });
+	app.get('/upload', isLoggedIn, function(req, res) {
+		var query = "SELECT id, name FROM Album WHERE owner_id = ?";
+		var params = [req.session.user.id];
+
+		connection.query(query, params, function(err, rows) {
+			if (err) throw err;
+
+			res.render('upload.ejs', {
+				albums: rows
+			});
+		});
+	});
+
+	// upload a picture
+	app.post('/upload', function(req, res) {
+		
+	});
+
+	// =====================================
+	// ALBUM ==============================
+	// =====================================
+	// create an album
+	app.post('/createAlbum', function(req, res) {
+		var query = "INSERT INTO Album (owner_id, name) VALUES (?, ?)";
+		var params = [req.session.user.id, req.body.album];
+
+		connection.query(query, params, function(err, rows) {
+			if (err) throw err;
+
+			res.redirect('/upload');
+		});
+	});
 
 	// =====================================
 	// FRIENDS ==============================
 	// =====================================
 	app.get('/friends', isLoggedIn, function(req, res) {
-		console.log(req.session.user);
+		// console.log(req.session.user);
 		var user_id = req.session.user.id;
 		var query = "\
 			SELECT email FROM User WHERE id IN (\
@@ -98,6 +127,7 @@ module.exports = function(app, passport) {
 		});
 	});
 
+	// search for users
 	app.post('/findUsers', function(req, res) {
 		// user does not provide any input
 		// show all users except current user and his friend
@@ -123,6 +153,7 @@ module.exports = function(app, passport) {
 		});
 	});
 
+	// add a friend
 	app.post('/addFriend', function(req, res) {
 		// console.log(req.session.user.id);
 		// console.log(req.body.friend);

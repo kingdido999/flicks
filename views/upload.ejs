@@ -1,0 +1,67 @@
+<!-- views/upload.ejs -->
+<!doctype html>
+<html>
+<head>
+	<title>Flicks</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+</head>
+<body>
+    <div class="container">
+
+      <nav class="navbar navbar-default">
+    	  <div class="container-fluid">
+    	    <div class="navbar-header">
+    	      <a class="navbar-brand" href="/">Flicks</a>
+    	    </div>
+    	    <div>
+    	      <ul class="nav navbar-nav">
+    					<li class="active"><a href="/upload">Upload</a></li>
+    					<li><a href="/friends">Friends</a></li>
+    					<li><a href="/profile">Profile</a></li>
+    					<li><a href="/logout">Logout</a></li>
+    	      </ul>
+    	    </div>
+    	  </div>
+    	</nav>
+
+      <div class="col-sm-6 col-sm-offset-3">
+        <h3>Upload a new picture</h3>
+        <form action="/upload" method="post" id="upload" class="form-inline">
+          <div class="form-group">
+            <input type="file" class="form-control-static" name="upload" accept="image/*" required>
+          </div>
+          <input type="submit" class="btn btn-primary" value="Upload">
+        </form>
+
+
+					<% if (typeof albums != 'undefined' && albums.length > 0) { %>
+						<label>Add to album</label>
+						<div class="form-group">
+							<select name="albums" form="upload" class="form-control" required>
+									<% for(var i = 0; i < albums.length; i++) { %>
+										<option value="<%= albums[i].id %>">
+												<%= albums[i].name %>
+										</option>
+									<% } %>
+							</select>
+						</div>
+					<% } else { %>
+						<p>Oops, you haven't created any album yet.</p>
+					<% } %>
+
+					<form action="/createAlbum" method="post">
+						<label>Create an album</label>
+						<div class="form-group">
+							<input type="text" name="album" class="form-control" placeholder="Enter your album name...">
+						</div>
+						<input type="submit" class="btn btn-primary" value="Create album">
+					</form>
+
+
+
+      </div>
+
+    </div>
+</body>
+</html>

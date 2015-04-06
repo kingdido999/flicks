@@ -7,8 +7,6 @@ var dbconfig = require('../config/database');
 
 var connection = mysql.createConnection(dbconfig.connection);
 
-connection.query('CREATE DATABASE IF NOT EXISTS ' + dbconfig.database);
-
 connection.query('\
 CREATE TABLE IF NOT EXISTS User (                             \
     id                INT           NOT NULL AUTO_INCREMENT,  \
@@ -124,7 +122,5 @@ CREATE TABLE IF NOT EXISTS Likes (                            \
       REFERENCES Photo(id)                                    \
       ON DELETE CASCADE                                       \
 )')
-
-console.log('Success: Database and Tables Created!')
 
 connection.end();

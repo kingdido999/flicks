@@ -25,23 +25,46 @@
 	  </div>
 	</nav>
 
-  <form action="/findUsers" method="post" class="form-inline">
-		<label>Try searching for people already on Flicks: </label>
-		<div class="form-group">
-			<input type="text" class="form-control" name="user">
-		</div>
-		<input type="submit" class="btn btn-primary" value="Search">
-	</form>
+	<div class="row">
+		<h3>People you follow</h3>
+		<% if (typeof friends != 'undefined') { %>
+			<ul>
+				<% for(var i = 0; i < friends.length; i++) { %>
+					<li>
+							<%= friends[i].email %>
+					</li>
+				<% } %>
+			</ul>
+		<% } %>
+	</div>
 
-	<% if (typeof users != 'undefined') { %>
-		<ul>
-			<% for(var i = 0; i < users.length; i++) { %>
-				<li>
-					<%= users[i].email %>
-				</li>
-			<% } %>
-		</ul>
-	<% } %>
+	<div class="row">
+		<h3>Add Friend: </h3>
+		<form action="/findUsers" method="post" class="form-inline">
+			<div class="form-group">
+				<input type="text" class="form-control" name="user">
+			</div>
+			<input type="submit" class="btn btn-primary" value="Search">
+		</form>
+	</div>
+
+	<div class="row">
+		<% if (typeof users != 'undefined') { %>
+			<ul>
+				<% for(var i = 0; i < users.length; i++) { %>
+					<li>
+						<form action="/addFriend" method="post" class="form-inline">
+							<%= users[i].email %>
+							<input type="hidden" name="friend" value="<%= users[i].email %>">
+							<input type="submit" name="add" value="Add" class="btn btn-primary btn-xs">
+						</form>
+					</li>
+				<% } %>
+			</ul>
+		<% } %>		
+	</div>
+
+
 
 </div>
 </body>

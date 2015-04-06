@@ -80,8 +80,20 @@ module.exports = function(app, passport) {
 	// FRIENDS ==============================
 	// =====================================
 	app.get('/friends', isLoggedIn, function(req, res) {
-		res.render('friends.ejs', {
-			user: req.user
+		console.log(req.session.user);
+		var user_id = req.session.user.id;
+		var query = "SELECT email FROM User WHERE id IN (\
+			SELECT friend_id FROM Friend WHERE user_id = ?)";
+		var params = [user_id];
+
+		connection.query(query, params, function(err, rows) {
+			if (err) throw err;
+
+			res.render('friends.ejs', {
+				user: req.user,
+				friends: rows,
+				users: req.session.user.search_result
+			});
 		});
 	});
 
@@ -89,7 +101,7 @@ module.exports = function(app, passport) {
 		var query = "";
 		var params = null;
 
-		console.log(req.session.cookie);
+		// console.log(req.session.cookie);
 
 		if (req.body.user == '') {
 			// just show all users except current user
@@ -104,10 +116,26 @@ module.exports = function(app, passport) {
 		connection.query(query, params, function(err, rows) {
 			if (err) throw err;
 
-			res.render('friends.ejs', {
-				users: rows
-			});
+			req.session.user.search_result = rows;
+			res.redirect('/friends');
 		});
+	});
+
+	app.post('/addFriend', function(req, res) {
+		// console.log(req.session.user.id);
+		// console.log(req.body.friend);
+		var user_id = req.session.user.id;
+		var friend_email = req.body.friend;
+		var query = "INSERT INTO Friend (friend_id, user_id) VALUES (\
+			(SELECT id FROM User WHERE email = ?), ?\
+		)";
+		var params = [friend_email, user_id];
+
+		connection.query(query, params, function(err, rows) {
+			if (err) throw err;
+
+			res.redirect('/friend');
+		})
 	});
 };
 

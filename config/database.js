@@ -3,8 +3,8 @@ module.exports = {
     'connection': {
         'host': 'localhost',
         'user': 'root',
-        'password': '04380425ASas!'
+        'password': '04380425ASas!',
+        'database': 'photoshare'
     },
-	'database': 'photoshare',
-    'users_table': 'User'
+	  'database': 'photoshare'
 };

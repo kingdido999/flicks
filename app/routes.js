@@ -82,7 +82,8 @@ module.exports = function(app, passport) {
 	app.get('/friends', isLoggedIn, function(req, res) {
 		console.log(req.session.user);
 		var user_id = req.session.user.id;
-		var query = "SELECT email FROM User WHERE id IN (\
+		var query = "\
+			SELECT email FROM User WHERE id IN (\
 			SELECT friend_id FROM Friend WHERE user_id = ?)";
 		var params = [user_id];
 
@@ -98,19 +99,20 @@ module.exports = function(app, passport) {
 	});
 
 	app.post('/findUsers', function(req, res) {
-		var query = "";
-		var params = null;
+		// user does not provide any input
+		// show all users except current user and his friend
+		var query = "\
+			SELECT email FROM User WHERE email != ?\
+			AND id NOT IN (\
+			SELECT friend_id FROM Friend WHERE user_id = ?)";
 
-		// console.log(req.session.cookie);
+		var	params = [req.session.user.email, req.session.user.id];
 
-		if (req.body.user == '') {
-			// just show all users except current user
-			query = "SELECT email FROM User WHERE email != ?";
-			params = [req.session.user.email];
-		} else {
-			// show users that match with the search text entered
-			query = "SELECT email FROM User WHERE email != ? AND email LIKE ?";
-			params = [req.session.user.email, '%' + req.body.user + '%'];
+		// user provides input
+		if (req.body.user != '') {
+			// show users that match the input
+			query += " AND email LIKE ?";
+			params.push('%' + req.body.user + '%');
 		}
 
 		connection.query(query, params, function(err, rows) {
@@ -126,15 +128,16 @@ module.exports = function(app, passport) {
 		// console.log(req.body.friend);
 		var user_id = req.session.user.id;
 		var friend_email = req.body.friend;
-		var query = "INSERT INTO Friend (friend_id, user_id) VALUES (\
-			(SELECT id FROM User WHERE email = ?), ?\
-		)";
+		var query = "\
+			INSERT INTO Friend (friend_id, user_id) VALUES (\
+			(SELECT id FROM User WHERE email = ?), ?)";
 		var params = [friend_email, user_id];
 
 		connection.query(query, params, function(err, rows) {
 			if (err) throw err;
 
-			res.redirect('/friend');
+			removeItemFromArray('email', friend_email, req.session.user.search_result);
+			res.redirect('/friends');
 		})
 	});
 };
@@ -148,4 +151,15 @@ function isLoggedIn(req, res, next) {
 
 	// if they aren't redirect them to the home page
 	res.redirect('/');
+}
+
+function removeItemFromArray(key, value, data) {
+	for (var i = 0; i < data.length; i++) {
+		if (data[i][key] == value) {
+			data.splice(i, 1);
+			break;
+		}
+	}
+
+	return data;
 }

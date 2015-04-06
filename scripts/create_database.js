@@ -49,7 +49,10 @@ connection.query('\
 CREATE TABLE IF NOT EXISTS Friend (                           \
     friend_id         INT           NOT NULL,                 \
     user_id           INT           NOT NULL,                 \
-    PRIMARY KEY(friend_id),                                   \
+    PRIMARY KEY(friend_id, user_id),                          \
+    FOREIGN KEY (friend_id)                                   \
+      REFERENCES User(id)                                     \
+      ON DELETE CASCADE,                                      \
     FOREIGN KEY (user_id)                                     \
       REFERENCES User(id)                                     \
       ON DELETE CASCADE                                       \

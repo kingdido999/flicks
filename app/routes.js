@@ -96,24 +96,26 @@ module.exports = function(app, passport) {
 	});
 
 	app.post('/findUsers', function(req, res) {
-		// var query = "";
-		//
-		// if (req.body.user == '') {
-		// 	query = "SELECT email FROM User WHERE email != ?";
-		// } else {
-		// 	query = "SELECT email FROM "
-		// }
-		console.log(req.session);
+		var query = "";
+		var params = null;
 
-		connection.query("SELECT email FROM User WHERE email != ?", [req.body.this_user], function(err, rows) {
+		if (req.body.user == '') {
+			// just show all users except current user
+			query = "SELECT email FROM User WHERE email != ?";
+			params = [req.session.user.email];
+		} else {
+			console.log(req.body.user);
+			// show users that match with the search text entered
+			query = "SELECT email FROM User WHERE email != ? AND email LIKE ?";
+			params = [req.session.user.email, '%' + req.body.user + '%'];
+		}
+
+		connection.query(query, params, function(err, rows) {
 			if (err) throw err;
 
-			// if any user exists in the database
-			if (rows.length) {
-				res.render('friends.ejs', {
-					users: rows
-				});
-			}
+			res.render('friends.ejs', {
+				users: rows
+			});
 		});
 	});
 };

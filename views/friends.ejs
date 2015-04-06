@@ -1,4 +1,4 @@
-<!-- views/profile.ejs -->
+<!-- views/friends.ejs -->
 <!doctype html>
 <html>
 <head>
@@ -17,30 +17,31 @@
 	    <div>
 	      <ul class="nav navbar-nav">
 					<li><a href="/upload">Upload</a></li>
-					<li><a href="/friends">Friends</a></li>
-					<li class="active"><a href="/profile">Profile</a></li>
+					<li class="active"><a href="/friends">Friends</a></li>
+					<li><a href="/profile">Profile</a></li>
 					<li><a href="/logout">Logout</a></li>
 	      </ul>
 	    </div>
 	  </div>
 	</nav>
 
-	<div class="row">
-		<p>Welcome Back! <%= user.email %></p>
+  <form action="/findUsers" method="post" class="form-inline">
+		<label>Try searching for people already on Flicks: </label>
+		<div class="form-group">
+			<input type="text" class="form-control" name="user">
+		</div>
+		<input type="submit" class="btn btn-primary" value="Search">
+	</form>
 
-		<!-- <div class="col-sm-12">
-			<h3>Upload a new picture</h3>
-			<form action="/upload" method="post" class="form-inline">
-				<div class="form-group">
-					<input type="file" class="form-control-static" name="pic" accept="image/*">
-				</div>
-				<div class="form-group">
-					<input type="submit" class="btn btn-default" name="upload" value="Upload">
-				</div>
-			</form>
-		</div> -->
-
-	</div>
+	<% if (typeof users != 'undefined') { %>
+		<ul>
+			<% for(var i = 0; i < users.length; i++) { %>
+				<li>
+					<%= users[i].email %>
+				</li>
+			<% } %>
+		</ul>
+	<% } %>
 
 </div>
 </body>

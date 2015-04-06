@@ -1,4 +1,12 @@
 // app/routes.js
+
+// set up databse connection
+var mysql = require('mysql');
+var dbconfig = require('../config/database');
+var connection = mysql.createConnection(dbconfig.connection);
+
+connection.query('USE ' + dbconfig.database);
+
 module.exports = function(app, passport) {
 
 	// =====================================
@@ -13,7 +21,6 @@ module.exports = function(app, passport) {
 	// =====================================
 	// show the login form
 	app.get('/login', function(req, res) {
-
 		// render the page and pass in any flash data if it exists
 		res.render('login.ejs', { message: req.flash('loginMessage') });
 	});
@@ -76,6 +83,36 @@ module.exports = function(app, passport) {
 	// app.post('/upload', function(req, res) {
 	//
 	// });
+
+	// =====================================
+	// FRIENDS ==============================
+	// =====================================
+	app.get('/friends', isLoggedIn, function(req, res) {
+		res.render('friends.ejs', {
+			user: req.user
+		});
+	});
+
+	app.post('/findUsers', function(req, res) {
+		// var query = "";
+		//
+		// if (req.body.user == '') {
+		// 	query = "SELECT email FROM User WHERE email != ?";
+		// } else {
+		// 	query = "SELECT email FROM "
+		// }
+
+		connection.query("SELECT email FROM User WHERE email != ?", [req.body.this_user], function(err, rows) {
+			if (err) throw err;
+
+			// if any user exists in the database
+			if (rows.length) {
+				res.render('friends.ejs', {
+					users: rows
+				});
+			}
+		});
+	});
 };
 
 // route middleware to make sure

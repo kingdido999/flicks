@@ -1,5 +1,5 @@
 /**
- * Created by barrett on 8/28/14.
+ * Initialize database and tables.
  */
 
 var mysql = require('mysql');
@@ -8,6 +8,7 @@ var dbconfig = require('../config/database');
 var connection = mysql.createConnection(dbconfig.connection);
 
 connection.query('CREATE DATABASE ' + dbconfig.database);
+console.log('Success: Database Created!')
 
 connection.query('\
 CREATE TABLE `' + dbconfig.database + '`.`' + dbconfig.users_table + '` ( \
@@ -25,6 +26,6 @@ CREATE TABLE `' + dbconfig.database + '`.`' + dbconfig.users_table + '` ( \
     PRIMARY KEY(id)                                           \
 )');
 
-console.log('Success: Database Created!')
+
 
 connection.end();

@@ -69,6 +69,13 @@ module.exports = function(app, passport) {
 		req.logout();
 		res.redirect('/');
 	});
+
+	// =====================================
+	// UPLOAD ==============================
+	// =====================================
+	// app.post('/upload', function(req, res) {
+	//
+	// });
 };
 
 // route middleware to make sure

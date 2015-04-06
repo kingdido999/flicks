@@ -13,24 +13,22 @@
 <div class="container">
 
 	<div class="page-header text-center">
-		<h1><span class="fa fa-anchor"></span> Profile Page</h1>
+		<h1>Profile Page</h1>
 		<a href="/logout" class="btn btn-default btn-sm">Logout</a>
 	</div>
 
 	<div class="row">
 
-		<!-- LOCAL INFORMATION -->
-		<div class="col-sm-6">
-			<div class="well">
-				<h3><span class="fa fa-user"></span> Local</h3>
-
-					<p>
-						<strong>id</strong>: <%= user.id %><br>
-						<strong>email</strong>: <%= user.email %><br>
-						<strong>password</strong>: <%= user.password %>
-					</p>
-
-			</div>
+		<div class="col-sm-12">
+			<h3>Upload a new picture</h3>
+			<form action="/upload" method="post" class="form-inline">
+				<div class="form-group">
+					<input type="file" class="form-control-static" name="pic" accept="image/*">
+				</div>
+				<div class="form-group">
+					<input type="submit" class="btn btn-default" name="upload" value="Upload">
+				</div>
+			</form>
 		</div>
 
 	</div>

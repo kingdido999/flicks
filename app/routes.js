@@ -64,6 +64,8 @@ module.exports = function(app, passport) {
 	// we will want this protected so you have to be logged in to visit
 	// we will use route middleware to verify this (the isLoggedIn function)
 	app.get('/profile', isLoggedIn, function(req, res) {
+		req.session.user = req.user;
+
 		res.render('profile.ejs', {
 			user : req.user // get the user out of session and pass to template
 		});
@@ -101,6 +103,7 @@ module.exports = function(app, passport) {
 		// } else {
 		// 	query = "SELECT email FROM "
 		// }
+		console.log(req.session);
 
 		connection.query("SELECT email FROM User WHERE email != ?", [req.body.this_user], function(err, rows) {
 			if (err) throw err;

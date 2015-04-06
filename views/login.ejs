@@ -2,12 +2,27 @@
 <!doctype html>
 <html>
 <head>
-	<title>Node Authentication</title>
+	<title>Flicks</title>
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
 </head>
 <body>
     <div class="container">
+
+			<nav class="navbar navbar-default">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<a class="navbar-brand" href="/">Flicks</a>
+					</div>
+					<div>
+						<ul class="nav navbar-nav">
+							<li class="active"><a href="/login">Login</a></li>
+							<li><a href="/signup">Signup</a></li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+
         <div class="col-sm-6 col-sm-offset-3">
             <h1><span class="fa fa-sign-in"></span> Login</h1>
 
@@ -29,11 +44,6 @@
 
                 <button type="submit" class="btn btn-warning btn-lg">Login</button>
             </form>
-
-            <hr>
-
-            <p>Need an account? <a href="/signup">Signup</a></p>
-            <p>Or go <a href="/">home</a>.</p>
         </div>
     </div>
 </body>

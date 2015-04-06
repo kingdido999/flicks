@@ -30,17 +30,7 @@ module.exports = function(app, passport) {
             successRedirect : '/profile', // redirect to the secure profile section
             failureRedirect : '/login', // redirect back to the signup page if there is an error
             failureFlash : true // allow flash messages
-		}),
-        function(req, res) {
-            console.log("hello");
-
-            if (req.body.remember) {
-              req.session.cookie.maxAge = 1000 * 60 * 3;
-            } else {
-              req.session.cookie.expires = false;
-            }
-        res.redirect('/');
-    });
+		}));
 
 	// =====================================
 	// SIGNUP ==============================
@@ -99,12 +89,13 @@ module.exports = function(app, passport) {
 		var query = "";
 		var params = null;
 
+		console.log(req.session.cookie);
+
 		if (req.body.user == '') {
 			// just show all users except current user
 			query = "SELECT email FROM User WHERE email != ?";
 			params = [req.session.user.email];
 		} else {
-			console.log(req.body.user);
 			// show users that match with the search text entered
 			query = "SELECT email FROM User WHERE email != ? AND email LIKE ?";
 			params = [req.session.user.email, '%' + req.body.user + '%'];

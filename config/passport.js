@@ -95,6 +95,15 @@ module.exports = function(passport) {
             passReqToCallback : true // allows us to pass back the entire request to the callback
         },
         function(req, email, password, done) { // callback with email and password from our form
+            if (req.body.remember) {
+              // remember this user
+              var hour = 3600000;
+              req.session.cookie.expires = new Date(Date.now() + hour)
+              req.session.cookie.maxAge = hour;
+            } else {
+              req.session.cookie.expires = false;
+            }
+
             connection.query("SELECT * FROM User WHERE email = ?",[email], function(err, rows){
                 if (err)
                     return done(err);

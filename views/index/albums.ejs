@@ -1,0 +1,49 @@
+<!-- views/index/albums.ejs -->
+<!doctype html>
+<html>
+<head>
+	<title>Flicks</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+	<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+
+			<nav class="navbar navbar-default">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<a class="navbar-brand" href="/">Flicks</a>
+					</div>
+					<div>
+						<ul class="nav navbar-nav">
+							<li><a href="/login">Login</a></li>
+							<li><a href="/signup">Signup</a></li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div>
+            <ul class="nav navbar-nav">
+              <li><a href="/">Photostream</a></li>
+              <li class="active"><a href="/albums">Albums</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Albums -->
+    	<% if (typeof albums != 'undefined' && albums.length > 0) { %>
+    			<% for(var i = 0; i < albums.length; i++) { %>
+    				<ul>
+    					<li><%= albums[i].name %></li>
+    				</ul>
+    			<% } %>
+    	<% } %>
+
+    </div>
+</body>
+</html>

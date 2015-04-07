@@ -1,4 +1,4 @@
-<!-- views/index.ejs -->
+<!-- views/index/photos.ejs -->
 <!doctype html>
 <html>
 <head>
@@ -23,6 +23,17 @@
 					</div>
 				</div>
 			</nav>
+
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div>
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="/">Photostream</a></li>
+              <li><a href="/albums">Albums</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
 
 				<% if (typeof photos != 'undefined' && photos.length > 0) { %>
 						<% for(var i = 0; i < photos.length; i++) { %>

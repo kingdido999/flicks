@@ -38,7 +38,7 @@ Each comment is identified by a unique comment id and has the following attribut
 
 #### Album and photo management
 
-- [ ] **Photo and album browsing.** Every visitor to the site, registered or not, should be allowed to browse photos. In this project we will assume that all photos and albums are made public by their authors.
+- [x] **Photo and album browsing.** Every visitor to the site, registered or not, should be allowed to browse photos. In this project we will assume that all photos and albums are made public by their authors.
 - [ ] **Photo and album creating.** After registration, users can start creating albums and uploading photos. The relevant fields are described above. Users should also be able to delete both albums and photos. If an non-empty album is deleted its photos should also be purged. Users should only be allowed to modify and delete albums and photos which they own.
 
 #### Tag management

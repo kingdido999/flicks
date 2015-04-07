@@ -15,19 +15,32 @@ var rootDir = path.dirname(require.main.filename);
 module.exports = function(app, passport) {
 
 	// =====================================
-	// HOME PAGE (with login links) ========
+	// HOME PAGE ===========================
 	// =====================================
+	// photostream
 	app.get('/', function(req, res) {
 		var query = "SELECT path FROM Photo";
 
 		connection.query(query, function(err, rows) {
 			if (err) throw err;
 
-			res.render('index.ejs', {
+			res.render('index/photos.ejs', {
 				photos: rows
 			});
 		});
-		//res.render('index.ejs');
+	});
+
+	// albums
+	app.get('/albums', function(req, res) {
+		var query = "SELECT id, name, num_photos FROM Album";
+
+		connection.query(query, function(err, rows) {
+			if (err) throw err;
+
+			res.render('index/albums.ejs', {
+				albums: rows
+			});
+		});
 	});
 
 	// =====================================
@@ -41,7 +54,7 @@ module.exports = function(app, passport) {
 
 	// process the login form
 	app.post('/login', passport.authenticate('local-login', {
-            successRedirect : '/profile', // redirect to the secure profile section
+            successRedirect : '/profile/photos', // redirect to the secure profile section
             failureRedirect : '/login', // redirect back to the signup page if there is an error
             failureFlash : true // allow flash messages
 		}));
@@ -57,21 +70,46 @@ module.exports = function(app, passport) {
 
 	// process the signup form
 	app.post('/signup', passport.authenticate('local-signup', {
-		successRedirect : '/profile', // redirect to the secure profile section
+		successRedirect : '/profile/photos', // redirect to the secure profile section
 		failureRedirect : '/signup', // redirect back to the signup page if there is an error
 		failureFlash : true // allow flash messages
 	}));
 
 	// =====================================
-	// PROFILE SECTION =========================
+	// PROFILE =============================
 	// =====================================
 	// we will want this protected so you have to be logged in to visit
 	// we will use route middleware to verify this (the isLoggedIn function)
-	app.get('/profile', isLoggedIn, function(req, res) {
+	app.get('/profile/photos', isLoggedIn, function(req, res) {
+		var query = "\
+			SELECT path FROM Photo P, Album A WHERE\
+			P.album_id = A.id AND A.owner_id = ?";
+		var params = [req.user.id]
+
+		// store user in session
 		req.session.user = req.user;
 
-		res.render('profile.ejs', {
-			user : req.user // get the user out of session and pass to template
+		connection.query(query, params, function(err, rows) {
+			if (err) throw err;
+
+			res.render('profile/photos', {
+				user: req.session.user,
+				photos: rows
+			});
+		});
+	});
+
+	app.get('/profile/albums', isLoggedIn, function(req, res) {
+		var query = "SELECT id, name, num_photos FROM Album WHERE owner_id = ?";
+		var params = [req.session.user.id];
+
+		connection.query(query, params, function(err, rows) {
+			if (err) throw err;
+
+			res.render('profile/albums', {
+				user: req.session.user,
+				albums: rows
+			});
 		});
 	});
 

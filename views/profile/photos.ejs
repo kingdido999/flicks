@@ -1,0 +1,54 @@
+<!-- views/profile/photos.ejs -->
+<!doctype html>
+<html>
+<head>
+	<title>Flicks</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<div class="container">
+
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+	    <div class="navbar-header">
+	      <a class="navbar-brand" href="/">Flicks</a>
+	    </div>
+	    <div>
+	      <ul class="nav navbar-nav">
+					<li><a href="/upload">Upload</a></li>
+					<li><a href="/friends">Friends</a></li>
+					<li class="active"><a href="/profile">Profile</a></li>
+					<li><a href="/logout">Logout</a></li>
+	      </ul>
+				<p class="navbar-text navbar-right">Signed in as <a href="#" class="navbar-link"><%= user.email %></a></p>
+	    </div>
+		</div>
+	</nav>
+
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<div>
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="/profile/photos">Photostream</a></li>
+					<li><a href="/profile/albums">Albums</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<!-- Photostream -->
+	<% if (typeof photos != 'undefined' && photos.length > 0) { %>
+			<% for(var i = 0; i < photos.length; i++) { %>
+				<div class="image-container">
+					<a href="<%= photos[i].path %>">
+						<img src="<%= photos[i].path %>" />
+					</a>
+				</div>
+			<% } %>
+	<% } %>
+
+</div>
+</body>
+</html>

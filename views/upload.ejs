@@ -27,9 +27,9 @@
 
       <div class="col-sm-6 col-sm-offset-3">
         <h3>Upload a new picture</h3>
-        <form action="/upload" method="post" id="upload" class="form-inline">
+        <form action="/upload" method="post" id="upload" enctype="multipart/form-data" class="form-inline">
           <div class="form-group">
-            <input type="file" class="form-control-static" name="upload" accept="image/*" required>
+            <input type="file" class="form-control-static" name="uploadFile" accept="image/*" required>
           </div>
           <input type="submit" class="btn btn-primary" value="Upload">
         </form>
@@ -38,7 +38,7 @@
 					<% if (typeof albums != 'undefined' && albums.length > 0) { %>
 						<label>Add to album</label>
 						<div class="form-group">
-							<select name="albums" form="upload" class="form-control" required>
+							<select name="album" form="upload" class="form-control" required>
 									<% for(var i = 0; i < albums.length; i++) { %>
 										<option value="<%= albums[i].id %>">
 												<%= albums[i].name %>

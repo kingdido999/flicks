@@ -4,7 +4,8 @@ module.exports = {
         'host': 'localhost',
         'user': 'root',
         'password': 'test',
-        'database': 'photoshare'
+        'database': 'photoshare',
+        'multipleStatements': true
     },
 	  'database': 'photoshare'
 };

@@ -7,6 +7,11 @@ var connection = mysql.createConnection(dbconfig.connection);
 
 connection.query('USE ' + dbconfig.database);
 
+// set up file reading and writing
+var fs = require('fs');
+var path = require('path');
+var rootDir = path.dirname(require.main.filename);
+
 module.exports = function(app, passport) {
 
 	// =====================================
@@ -87,7 +92,31 @@ module.exports = function(app, passport) {
 
 	// upload a picture
 	app.post('/upload', function(req, res) {
-		
+		// get the file object
+		var file = req.files.uploadFile;
+		var newPath = rootDir + '/uploads/' + file.originalFilename;
+
+		// insert a new photo
+		// update the number of photos in album
+		var query = "\
+			INSERT INTO Photo (album_id, caption, path) VALUES (?, ?, ?);\
+			UPDATE Album SET num_photos = num_photos + 1 WHERE id = ?";
+		var params = [req.body.album, file.originalFilename, newPath, req.body.album];
+
+		// read file from tmp storage
+		fs.readFile(file.path, function(err, data) {
+			// write file to the new path ./uploads/
+			fs.writeFile(newPath, data, function(err) {
+				if (err) throw err;
+
+				connection.query(query, params, function(err, rows) {
+					if (err) throw err;
+
+					console.log('File uploaded!');
+					res.redirect('/upload');
+				});
+			});
+		});
 	});
 
 	// =====================================

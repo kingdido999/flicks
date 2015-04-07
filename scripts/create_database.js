@@ -7,8 +7,8 @@ var dbconfig = require('../config/database');
 
 var connection = mysql.createConnection(dbconfig.connection);
 
-connection.query('\
-CREATE TABLE User (                             \
+connection.query('                                            \
+CREATE TABLE User (                                           \
     id                INT           NOT NULL AUTO_INCREMENT,  \
     email             VARCHAR(255)  NOT NULL UNIQUE,          \
     password          VARCHAR(255)  NOT NULL,                 \
@@ -23,8 +23,8 @@ CREATE TABLE User (                             \
     PRIMARY KEY(id)                                           \
 )');
 
-connection.query('\
-CREATE TABLE Location (                         \
+connection.query('                                            \
+CREATE TABLE Location (                                       \
     user_id           INT           NOT NULL,                 \
     type              VARCHAR(20)   NOT NULL,                 \
     city              VARCHAR(255)  NOT NULL,                 \
@@ -35,8 +35,8 @@ CREATE TABLE Location (                         \
       ON DELETE CASCADE                                       \
 )');
 
-connection.query('\
-CREATE TABLE Education (                        \
+connection.query('                                            \
+CREATE TABLE Education (                                      \
     user_id           INT           NOT NULL,                 \
     school            VARCHAR(255)  NOT NULL,                 \
     degree            VARCHAR(255)  NOT NULL,                 \
@@ -45,8 +45,8 @@ CREATE TABLE Education (                        \
       ON DELETE CASCADE                                       \
 )');
 
-connection.query('\
-CREATE TABLE Friend (                           \
+connection.query('                                            \
+CREATE TABLE Friend (                                         \
     friend_id         INT           NOT NULL,                 \
     user_id           INT           NOT NULL,                 \
     PRIMARY KEY(friend_id, user_id),                          \
@@ -58,8 +58,8 @@ CREATE TABLE Friend (                           \
       ON DELETE CASCADE                                       \
 )');
 
-connection.query('\
-CREATE TABLE Album (                            \
+connection.query('                                            \
+CREATE TABLE Album (                                          \
     id                INT           NOT NULL AUTO_INCREMENT,  \
     owner_id          INT           NOT NULL,                 \
     name              VARCHAR(255)  NOT NULL,                 \
@@ -71,8 +71,8 @@ CREATE TABLE Album (                            \
       ON DELETE CASCADE                                       \
 )');
 
-connection.query('\
-CREATE TABLE Photo (                            \
+connection.query('                                            \
+CREATE TABLE Photo (                                          \
     id                INT           NOT NULL AUTO_INCREMENT,  \
     album_id          INT           NOT NULL,                 \
     caption           VARCHAR(255)  NOT NULL,                 \
@@ -86,8 +86,8 @@ CREATE TABLE Photo (                            \
       ON DELETE CASCADE                                       \
 )');
 
-connection.query('\
-CREATE TABLE Tag (                              \
+connection.query('                                            \
+CREATE TABLE Tag (                                            \
     photo_id          INT           NOT NULL,                 \
     name              VARCHAR(255)  NOT NULL,                 \
     PRIMARY KEY(photo_id, name),                              \
@@ -96,8 +96,8 @@ CREATE TABLE Tag (                              \
       ON DELETE CASCADE                                       \
 )');
 
-connection.query('\
-CREATE TABLE Comment (                          \
+connection.query('                                            \
+CREATE TABLE Comment (                                        \
     id                INT           NOT NULL AUTO_INCREMENT,  \
     owner_id          INT           NOT NULL,                 \
     photo_id          INT           NOT NULL,                 \
@@ -112,8 +112,8 @@ CREATE TABLE Comment (                          \
       ON DELETE CASCADE                                       \
 )');
 
-connection.query('\
-CREATE TABLE Likes (                            \
+connection.query('                                            \
+CREATE TABLE Likes (                                          \
     user_id           INT           NOT NULL,                 \
     photo_id          INT           NOT NULL,                 \
     date_of_creation  TIMESTAMP     DEFAULT CURRENT_TIMESTAMP,\

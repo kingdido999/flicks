@@ -43,6 +43,10 @@
 			<% for(var i = 0; i < albums.length; i++) { %>
 				<ul>
 					<li><%= albums[i].name %></li>
+					<form action="/deleteAlbum" method="post">
+						<input type="hidden" name="album_id" value="<%= albums[i].id %>">
+						<input type="submit" value="Delete">
+					</form>
 				</ul>
 			<% } %>
 	<% } %>

@@ -175,13 +175,36 @@ module.exports = function(app, passport) {
 	// =====================================
 	// create an album
 	app.post('/createAlbum', function(req, res) {
-		var query = "INSERT INTO Album (owner_id, name) VALUES (?, ?)";
-		var params = [req.session.user.id, req.body.album];
+		// if the album name is empty, return
+		if (req.body.album == '') {
+			console.log('Album name could not be empty!');
+			res.redirect('/upload');
+		} else {
+			var query = "INSERT INTO Album (owner_id, name) VALUES (?, ?)";
+			var params = [req.session.user.id, req.body.album];
+
+			connection.query(query, params, function(err, rows) {
+				if (err) throw err;
+
+				res.redirect('/upload');
+			});
+		}
+	});
+
+	// delete an album
+	app.post('/deleteAlbum', function (req, res) {
+		// console.log(req.body);
+		var query = "\
+			DELETE FROM Album WHERE id = ?;\
+			UPDATE User SET num_albums = num_albums - 1 WHERE id = (\
+				SELECT owner_id FROM Album WHERE id = ?)";
+		var params = [req.body.album_id, req.body.album_id];
 
 		connection.query(query, params, function(err, rows) {
 			if (err) throw err;
 
-			res.redirect('/upload');
+			console.log('Album deleted');
+			res.redirect('/profile/albums');
 		});
 	});
 

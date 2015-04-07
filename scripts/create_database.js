@@ -124,6 +124,6 @@ CREATE TABLE Likes (                                          \
     FOREIGN KEY (photo_id)                                    \
       REFERENCES Photo(id)                                    \
       ON DELETE CASCADE                                       \
-)')
+)');
 
 connection.end();

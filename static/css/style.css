@@ -1,0 +1,12 @@
+.image-container {
+  height: 300px;
+  width: 400px;
+  float: left;
+  overflow: hidden;
+  margin: 5px;
+}
+
+.image-container img {
+  display: block;
+  max-width: 400px;
+}

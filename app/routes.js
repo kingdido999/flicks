@@ -18,7 +18,16 @@ module.exports = function(app, passport) {
 	// HOME PAGE (with login links) ========
 	// =====================================
 	app.get('/', function(req, res) {
-		res.render('index.ejs'); // load the index.ejs file
+		var query = "SELECT path FROM Photo";
+
+		connection.query(query, function(err, rows) {
+			if (err) throw err;
+
+			res.render('index.ejs', {
+				photos: rows
+			});
+		});
+		//res.render('index.ejs');
 	});
 
 	// =====================================
@@ -95,13 +104,14 @@ module.exports = function(app, passport) {
 		// get the file object
 		var file = req.files.uploadFile;
 		var newPath = rootDir + '/uploads/' + file.originalFilename;
+		var relPath = '/uploads/' + file.originalFilename;
 
 		// insert a new photo
 		// update the number of photos in album
 		var query = "\
 			INSERT INTO Photo (album_id, caption, path) VALUES (?, ?, ?);\
 			UPDATE Album SET num_photos = num_photos + 1 WHERE id = ?";
-		var params = [req.body.album, file.originalFilename, newPath, req.body.album];
+		var params = [req.body.album, file.originalFilename, relPath, req.body.album];
 
 		// read file from tmp storage
 		fs.readFile(file.path, function(err, data) {

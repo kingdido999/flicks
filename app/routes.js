@@ -11,6 +11,7 @@ connection.query('USE ' + dbconfig.database);
 var fs = require('fs');
 var path = require('path');
 var rootDir = path.dirname(require.main.filename);
+var uploadDir = '/uploads/';
 
 module.exports = function(app, passport) {
 
@@ -84,7 +85,7 @@ module.exports = function(app, passport) {
 	// we will use route middleware to verify this (the isLoggedIn function)
 	app.get('/profile/photos', isLoggedIn, function(req, res) {
 		var query = "\
-			SELECT path FROM Photo P, Album A WHERE\
+			SELECT P.id, P.album_id, P.caption, P.path FROM Photo P, Album A WHERE\
 			P.album_id = A.id AND A.owner_id = ?";
 		var params = [req.user.id]
 
@@ -144,7 +145,7 @@ module.exports = function(app, passport) {
 		// get the file object
 		var file = req.files.uploadFile;
 		var newPath = rootDir + '/uploads/' + file.originalFilename;
-		var relPath = '/uploads/' + file.originalFilename;
+		var relPath = uploadDir + file.originalFilename;
 
 		// insert a new photo
 		// update the number of photos in album
@@ -170,7 +171,7 @@ module.exports = function(app, passport) {
 	});
 
 	// =====================================
-	// ALBUM ==============================
+	// ALBUM ===============================
 	// =====================================
 	// create an album
 	app.post('/createAlbum', function(req, res) {
@@ -185,7 +186,37 @@ module.exports = function(app, passport) {
 	});
 
 	// =====================================
-	// FRIENDS ==============================
+	// Photo ===============================
+	// =====================================
+	// delete a photo
+	app.post('/deletePhoto', function(req, res) {
+		var photo_id = req.body.photo_id;
+		var photo_caption = req.body.photo_caption;
+		var album_id = req.body.album_id;
+		var photoPath = '.' + uploadDir + photo_caption;
+
+		// delete this photo and decrement the number of photos in the album
+		var query = "\
+			DELETE FROM Photo WHERE id = ?;\
+			UPDATE Album SET num_photos = num_photos - 1 WHERE id = ?";
+		var params = [photo_id, album_id];
+
+		connection.query(query, params, function(err, rows) {
+			if (err) throw err;
+
+			// delete the photo in the file system
+			fs.unlink(photoPath, function(err) {
+				if (err) throw err;
+
+				console.log('Photo deleted!');
+				res.redirect('/profile/photos');
+			})
+		});
+	});
+
+
+	// =====================================
+	// FRIENDS =============================
 	// =====================================
 	app.get('/friends', isLoggedIn, function(req, res) {
 		// console.log(req.session.user);

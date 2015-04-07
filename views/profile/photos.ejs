@@ -42,10 +42,21 @@
 	<% if (typeof photos != 'undefined' && photos.length > 0) { %>
 			<% for(var i = 0; i < photos.length; i++) { %>
 				<div class="image-container">
-					<a href="<%= photos[i].path %>">
-						<img src="<%= photos[i].path %>" />
-					</a>
+          <div class="image-wrapper">
+  					<a href="<%= photos[i].path %>">
+  						<img src="<%= photos[i].path %>" />
+  					</a>
+          </div>
+          <div class="image-meta">
+            <form action="/deletePhoto" method="post">
+              <input type="hidden" name="photo_id" value="<%= photos[i].id %>">
+              <input type="hidden" name="photo_caption" value="<%= photos[i].caption %>">
+              <input type="hidden" name="album_id" value="<%= photos[i].album_id %>">
+              <input type="submit" name="deletePhoto" value="Delete">
+            </form>
+          </div>
 				</div>
+
 			<% } %>
 	<% } %>
 

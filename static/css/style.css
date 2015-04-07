@@ -1,12 +1,21 @@
 .image-container {
-  height: 300px;
-  width: 400px;
-  float: left;
-  overflow: hidden;
+  height: 220px;
+  width: 300px;
+  display: inline-block;
   margin: 5px;
 }
 
-.image-container img {
+.image-wrapper {
+  height: 200px;
+  width: 300px;
+  overflow: hidden;
+}
+
+.image-wrapper img {
   display: block;
-  max-width: 400px;
+  max-width: 300px;
+}
+
+.image-meta {
+
 }

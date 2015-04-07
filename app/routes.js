@@ -25,6 +25,7 @@ module.exports = function(app, passport) {
 			if (err) throw err;
 
 			res.render('index/photos.ejs', {
+				user: req.user,
 				photos: rows
 			});
 		});
@@ -38,6 +39,7 @@ module.exports = function(app, passport) {
 			if (err) throw err;
 
 			res.render('index/albums.ejs', {
+				user: req.user,
 				albums: rows
 			});
 		});

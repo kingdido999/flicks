@@ -101,14 +101,11 @@ CREATE TABLE Tag (                                            \
 connection.query('                                            \
 CREATE TABLE Comment (                                        \
     id                INT           NOT NULL AUTO_INCREMENT,  \
-    owner_id          INT           NOT NULL,                 \
+    owner_id          INT,                                    \
     photo_id          INT           NOT NULL,                 \
     text              TEXT          NOT NULL,                 \
     date_of_creation  TIMESTAMP     DEFAULT CURRENT_TIMESTAMP,\
     PRIMARY KEY (id),                                         \
-    FOREIGN KEY (owner_id)                                    \
-      REFERENCES User(id)                                     \
-      ON DELETE CASCADE,                                      \
     FOREIGN KEY (photo_id)                                    \
       REFERENCES Photo(id)                                    \
       ON DELETE CASCADE                                       \

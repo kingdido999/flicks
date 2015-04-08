@@ -84,9 +84,11 @@ module.exports = function(app, passport) {
 	// we will want this protected so you have to be logged in to visit
 	// we will use route middleware to verify this (the isLoggedIn function)
 	app.get('/profile/photos', isLoggedIn, function(req, res) {
+		// get photos for this user
 		var query = "\
-			SELECT P.id, P.album_id, P.caption, P.path FROM Photo P, Album A WHERE\
-			P.album_id = A.id AND A.owner_id = ?";
+			SELECT P.id, P.album_id, P.caption, P.path\
+			FROM Photo P, Album A\
+			WHERE P.album_id = A.id AND A.owner_id = ?";
 		var params = [req.user.id]
 
 		// store user in session
@@ -163,8 +165,29 @@ module.exports = function(app, passport) {
 				connection.query(query, params, function(err, rows) {
 					if (err) throw err;
 
-					console.log('File uploaded!');
-					res.redirect('/upload');
+					// add tags for this photo
+					var photo_id = rows[0].insertId;
+					var tags = req.body.tags.split(' ');
+
+					var tagQuery = "INSERT INTO Tag (photo_id, name) VALUES ";
+					var tagParams = [];
+
+					for (var i = 0; i < tags.length; i++) {
+						tagQuery += "(?, ?)";
+						if (i < tags.length - 1) {
+							tagQuery += ", ";
+						}
+						tagParams.push(photo_id);
+						tagParams.push(tags[i]);
+					}
+
+					connection.query(tagQuery, tagParams, function(err, rows) {
+							if (err) throw err;
+
+							console.log('Tags added');
+							console.log('File uploaded!');
+							res.redirect('/upload');
+					});
 				});
 			});
 		});
@@ -256,7 +279,7 @@ module.exports = function(app, passport) {
 			connection.query(query, params, function(err, rows) {
 				if (err) throw err;
 			});
-		} 
+		}
 
 		console.log('Tags added!');
 		res.redirect('/profile/photos');

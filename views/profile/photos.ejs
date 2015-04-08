@@ -48,11 +48,13 @@
 				</a>
 			</div>
 			<div class="image-meta">
-				<form action="/addTags" method="post" class="form-add-tags">
+        <!-- Add tags -->
+				<!-- <form action="/addTags" method="post" class="form-add-tags">
 					<input type="hidden" name="photo_id" value="<%= photos[i].id %>">
 			        <input type="text" name="tags" class="form-control" placeholder="Separate tags with a space">
 			        <input type="submit" name="addTags" value="Add" class="btn btn-primary btn-sm">
-				</form>
+				</form> -->
+        <!-- Delete photo -->
 				<form action="/deletePhoto" method="post">
 					<input type="hidden" name="photo_id" value="<%= photos[i].id %>">
 					<input type="hidden" name="photo_caption" value="<%= photos[i].caption %>">

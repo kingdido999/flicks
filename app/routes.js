@@ -322,6 +322,22 @@ module.exports = function(app, passport) {
 		});
 	});
 
+	// add a comment
+	app.post('/addComment', function(req, res) {
+		var comment = req.body.comment;
+		// var owner_id = 
+
+		// check if comment is empty
+		if (comment.length > 0) {
+			var query = "\
+				INSERT INTO Comment (owner_id, photo_id, text) VALUES (?, ?, ?);\
+				UPDATE User SET num_comments = num_comments + 1 WHERE id = ?;\
+				UPDATE Photo SET num_comments = num_comments + 1 WHERE id = ?";
+			var params = [req.]
+		}
+		
+	});
+
 	// =====================================
 	// TAG =================================
 	// =====================================

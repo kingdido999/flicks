@@ -49,6 +49,22 @@
         <div class="">
           <%= photo.date_of_creation %>
         </div>
+
+        <!-- tags -->
+
+        <!-- comments -->
+
+        <!-- leave a comment -->
+        <!-- users cannot leave comments for their own photos -->
+        
+        <h4>Leave a comment</h4>
+        <form action="/addComment" method="post">
+          <div class="form-group">
+            <input type="text" name="comment" value="" class="form-control">
+          </div>
+          <input type="submit" name="addComment" value="Submit">
+        </form>
+        
       <% } %>
 
 

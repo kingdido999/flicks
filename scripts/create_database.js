@@ -30,6 +30,7 @@ CREATE TABLE Location (                                       \
     city              VARCHAR(255)  NOT NULL,                 \
     state             VARCHAR(255)  NOT NULL,                 \
     country           VARCHAR(255)  NOT NULL,                 \
+    PRIMARY KEY (user_id, type),                              \
     FOREIGN KEY (user_id)                                     \
       REFERENCES User(id)                                     \
       ON DELETE CASCADE                                       \
@@ -40,6 +41,7 @@ CREATE TABLE Education (                                      \
     user_id           INT           NOT NULL,                 \
     school            VARCHAR(255)  NOT NULL,                 \
     degree            VARCHAR(255)  NOT NULL,                 \
+    PRIMARY KEY (user_id),                                    \
     FOREIGN KEY (user_id)                                     \
       REFERENCES User(id)                                     \
       ON DELETE CASCADE                                       \
@@ -49,7 +51,7 @@ connection.query('                                            \
 CREATE TABLE Friend (                                         \
     friend_id         INT           NOT NULL,                 \
     user_id           INT           NOT NULL,                 \
-    PRIMARY KEY(friend_id, user_id),                          \
+    PRIMARY KEY (friend_id, user_id),                         \
     FOREIGN KEY (friend_id)                                   \
       REFERENCES User(id)                                     \
       ON DELETE CASCADE,                                      \
@@ -90,7 +92,7 @@ connection.query('                                            \
 CREATE TABLE Tag (                                            \
     photo_id          INT           NOT NULL,                 \
     name              VARCHAR(255)  NOT NULL,                 \
-    PRIMARY KEY(photo_id, name),                              \
+    PRIMARY KEY (photo_id, name),                              \
     FOREIGN KEY (photo_id)                                    \
       REFERENCES Photo(id)                                    \
       ON DELETE CASCADE                                       \
@@ -103,7 +105,7 @@ CREATE TABLE Comment (                                        \
     photo_id          INT           NOT NULL,                 \
     text              TEXT          NOT NULL,                 \
     date_of_creation  TIMESTAMP     DEFAULT CURRENT_TIMESTAMP,\
-    PRIMARY KEY(id),                                          \
+    PRIMARY KEY (id),                                         \
     FOREIGN KEY (owner_id)                                    \
       REFERENCES User(id)                                     \
       ON DELETE CASCADE,                                      \
@@ -117,7 +119,7 @@ CREATE TABLE Likes (                                          \
     user_id           INT           NOT NULL,                 \
     photo_id          INT           NOT NULL,                 \
     date_of_creation  TIMESTAMP     DEFAULT CURRENT_TIMESTAMP,\
-    PRIMARY KEY(user_id, photo_id),                           \
+    PRIMARY KEY (user_id, photo_id),                          \
     FOREIGN KEY (user_id)                                     \
       REFERENCES User(id)                                     \
       ON DELETE CASCADE,                                      \

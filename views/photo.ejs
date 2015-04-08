@@ -1,4 +1,4 @@
-<!-- views/index/photos.ejs -->
+<!-- views/photos.ejs -->
 <!doctype html>
 <html>
 <head>
@@ -31,29 +31,18 @@
 				</div>
 			</nav>
 
-      <nav class="navbar navbar-default">
-        <div class="container-fluid">
-          <div>
-            <ul class="nav navbar-nav">
-              <li class="active"><a href="/">Photostream</a></li>
-              <li><a href="/albums">Albums</a></li>
-							<li><a href="/tags">Tags</a></li>
-            </ul>
-          </div>
+      <!-- Display photo -->
+			<% if (typeof photo != 'undefined') { %>
+        <div class="image-large">
+          <a href="<%= photo.path %>">
+            <img src="<%= photo.path %>" />
+          </a>
         </div>
-      </nav>
+			<% } %>
 
-				<% if (typeof photos != 'undefined' && photos.length > 0) { %>
-						<% for(var i = 0; i < photos.length; i++) { %>
-							<div class="image-container">
-								<div class="image-wrapper">
-									<a href="/photo?id=<%= photos[i].id %>">
-										<img src="<%= photos[i].path %>" />
-									</a>
-								</div>
-							</div>
-						<% } %>
-				<% } %>
+      <!-- Display comments -->
+
+      <!-- Leave a comment -->
 
 
     </div>

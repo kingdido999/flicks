@@ -20,7 +20,7 @@ module.exports = function(app, passport) {
 	// =====================================
 	// photostream
 	app.get('/', function(req, res) {
-		var query = "SELECT path FROM Photo";
+		var query = "SELECT id, path FROM Photo";
 
 		connection.query(query, function(err, rows) {
 			if (err) throw err;
@@ -275,6 +275,22 @@ module.exports = function(app, passport) {
 	// =====================================
 	// Photo ===============================
 	// =====================================
+	app.get('/photo', function(req, res) {
+		var photo_id = req.query.id;
+		var query = "SELECT path FROM Photo WHERE id = ?";
+		var params = [photo_id];
+
+		connection.query(query, params, function(err, rows) {
+			if (err) throw err;
+
+			console.log(rows);
+
+			res.render('photo.ejs', {
+				photo: rows[0]
+			});
+		})
+	});
+
 	// delete a photo
 	app.post('/deletePhoto', function(req, res) {
 		var photo_id = req.body.photo_id;

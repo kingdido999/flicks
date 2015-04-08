@@ -53,6 +53,19 @@
               </form>
             <% } %>
         <% } %>
+				<!-- Popular tags -->
+				<!-- <form action="/showPopularTags" method="post">
+					<input type="submit" name="showPopularTags" value="Show p">
+				</form>
+				<% if (typeof tags != 'undefined' && tags.length > 0) { %>
+						<h3>Popular tags</h3>
+						<% for(var i = 0; i < tags.length; i++) { %>
+							<form action="/showAllTaggedPhotos" method="post" class="form-show-tagged-photos">
+								<input type="hidden" name="tag_name" value="<%= tags[i].name %>">
+								<input type="submit" value="<%= tags[i].name %>" class="btn btn-primary btn-xs">
+							</form>
+						<% } %>
+				<% } %> -->
       </div>
 
 			<div class="row">

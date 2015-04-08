@@ -43,8 +43,7 @@
     <!-- Tags -->
     <% if (typeof tags != 'undefined' && tags.length > 0) { %>
         <% for(var i = 0; i < tags.length; i++) { %>
-          <form action="/showTaggedPhotos" method="post" class="form-show-tagged-photos">
-            <!-- <input type="hidden" name="photo_id" value="<%= tags[i].photo_id %>"> -->
+          <form action="/showUserTaggedPhotos" method="post" class="form-show-tagged-photos">
             <input type="hidden" name="tag_name" value="<%= tags[i].name %>">
             <input type="submit" value="<%= tags[i].name %>" class="btn btn-primary btn-xs">
           </form>

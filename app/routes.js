@@ -46,6 +46,24 @@ module.exports = function(app, passport) {
 		});
 	});
 
+	// tags
+	app.get('/tags', function(req, res) {
+		var query = "SELECT DISTINCT name FROM Tag";
+
+		connection.query(query, function(err, rows) {
+			if (err) throw err;
+
+			console.log(req.photos);
+
+			res.render('index/tags.ejs', {
+				user: req.user,
+				photos: req.session.photos,
+				tag_chosen: req.session.tag_chosen,
+				tags: rows
+			});
+		});
+	});
+
 	// =====================================
 	// LOGIN ===============================
 	// =====================================
@@ -309,7 +327,7 @@ module.exports = function(app, passport) {
 	});
 
 	// show photos with the tag that user clicked
-	app.post('/showTaggedPhotos', function(req, res) {
+	app.post('/showUserTaggedPhotos', function(req, res) {
 		var tag_name = req.body.tag_name;
 		var query = "\
 			SELECT P.path \
@@ -324,6 +342,28 @@ module.exports = function(app, passport) {
 			req.session.user.photos = rows;
 			req.session.user.tag_chosen = tag_name;
 			res.redirect('/profile/tags');
+		});
+	});
+
+	// show all photos with the tag
+	app.post('/showAllTaggedPhotos', function(req, res) {
+		var tag_name = req.body.tag_name;
+		var query = "\
+			SELECT P.path \
+			FROM Photo P, Tag T \
+			WHERE P.id = T.photo_id AND T.name = ?";
+		var params = [tag_name];
+
+		connection.query(query, params, function(err, rows) {
+			if (err) throw err;
+
+			// console.log(rows);
+
+			req.session.photos = rows;
+			req.session.tag_chosen = tag_name;
+
+			// console.log(req.photos);
+			res.redirect('/tags');
 		});
 	});
 

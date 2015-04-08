@@ -103,10 +103,7 @@ module.exports = function(app, passport) {
 	// we will use route middleware to verify this (the isLoggedIn function)
 	app.get('/profile/photos', isLoggedIn, function(req, res) {
 		// get photos for this user
-		var query = "\
-			SELECT P.id, P.album_id, P.caption, P.path\
-			FROM Photo P, Album A\
-			WHERE P.album_id = A.id AND A.owner_id = ?";
+		var query = "SELECT id, album_id, caption, path FROM Photo WHERE owner_id = ?";
 		var params = [req.user.id]
 
 		// store user in session
@@ -139,8 +136,8 @@ module.exports = function(app, passport) {
 	app.get('/profile/tags', isLoggedIn, function(req, res) {
 		var query = "\
 			SELECT DISTINCT T.name \
-			FROM Album A, Photo P, Tag T \
-			WHERE A.id = P.album_id AND P.id = T.photo_id AND A.owner_id = ?";
+			FROM Photo P, Tag T \
+			WHERE P.id = T.photo_id AND P.owner_id = ?";
 		var params = [req.session.user.id];
 
 		connection.query(query, params, function(err, rows) {
@@ -293,6 +290,7 @@ module.exports = function(app, passport) {
 			if (err) throw err;
 
 			res.render('photo.ejs', {
+				user: req.session.user,
 				photo: rows[0]
 			});
 		})
@@ -354,9 +352,9 @@ module.exports = function(app, passport) {
 		var tag_name = req.body.tag_name;
 		var query = "\
 			SELECT P.path \
-			FROM User U, Album A, Photo P, Tag T \
-			WHERE U.id = A.owner_id AND A.id = P.album_id AND P.id = T.photo_id \
-			AND U.id = ? AND T.name = ?";
+			FROM Photo P, Tag T \
+			WHERE P.id = T.photo_id \
+			AND P.owner_id = ? AND T.name = ?";
 		var params = [req.session.user.id, tag_name];
 
 		connection.query(query, params, function(err, rows) {

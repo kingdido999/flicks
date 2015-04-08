@@ -7,61 +7,71 @@
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
 </head>
 <body>
-    <div class="container">
+  <div class="container">
 
-      <nav class="navbar navbar-default">
-    	  <div class="container-fluid">
-    	    <div class="navbar-header">
-    	      <a class="navbar-brand" href="/">Flicks</a>
-    	    </div>
-    	    <div>
-    	      <ul class="nav navbar-nav">
-    					<li class="active"><a href="/upload">Upload</a></li>
-    					<li><a href="/friends">Friends</a></li>
-    					<li><a href="/profile/photos">Profile</a></li>
-    					<li><a href="/logout">Logout</a></li>
-    	      </ul>
-    	    </div>
-    	  </div>
-    	</nav>
+    <nav class="navbar navbar-default">
+     <div class="container-fluid">
+       <div class="navbar-header">
+         <a class="navbar-brand" href="/">Flicks</a>
+       </div>
+       <div>
+         <ul class="nav navbar-nav">
+           <li class="active"><a href="/upload">Upload</a></li>
+           <li><a href="/friends">Friends</a></li>
+           <li><a href="/profile/photos">Profile</a></li>
+           <li><a href="/logout">Logout</a></li>
+         </ul>
+       </div>
+     </div>
+   </nav>
 
-      <div class="col-sm-6 col-sm-offset-3">
-        <h3>Upload a new picture</h3>
-        <form action="/upload" method="post" id="upload" enctype="multipart/form-data" class="form-inline">
-          <div class="form-group">
-            <input type="file" class="form-control-static" name="uploadFile" accept="image/*" required>
-          </div>
-          <input type="submit" class="btn btn-primary" value="Upload">
-        </form>
+   <!-- Upload a picture -->
+   <div class="col-sm-6">
 
-
-					<% if (typeof albums != 'undefined' && albums.length > 0) { %>
-						<label>Add to album</label>
-						<div class="form-group">
-							<select name="album" form="upload" class="form-control" required>
-									<% for(var i = 0; i < albums.length; i++) { %>
-										<option value="<%= albums[i].id %>">
-												<%= albums[i].name %>
-										</option>
-									<% } %>
-							</select>
-						</div>
-					<% } else { %>
-						<p>Oops, you haven't created any album yet.</p>
-					<% } %>
-
-					<form action="/createAlbum" method="post">
-						<label>Create an album</label>
-						<div class="form-group">
-							<input type="text" name="album" class="form-control" required>
-						</div>
-						<input type="submit" class="btn btn-primary" value="Create album">
-					</form>
-
-
-
+    <form action="/upload" method="post" id="upload" enctype="multipart/form-data">
+      <div class="form-group">
+        <input type="file" class="form-control-static" name="uploadFile" accept="image/*" required>
       </div>
 
+      <!-- Add tags -->
+<!--       <div class="form-group">
+        <label>Add tags</label>
+        <input type="text" name="tags" class="form-control" placeholder="Separate tags with a space">
+      </div>
+      -->
+      <input type="submit" class="btn btn-primary" value="Upload"> 
+    </form>
+
+  </div>
+
+
+  <!-- Add to album -->
+  <div class="col-sm-6">
+    <% if (typeof albums != 'undefined' && albums.length > 0) { %>
+    <label>Add to album</label>
+    <div class="form-group">
+      <select name="album" form="upload" class="form-control" required>
+        <% for(var i = 0; i < albums.length; i++) { %>
+        <option value="<%= albums[i].id %>">
+          <%= albums[i].name %>
+        </option>
+        <% } %>
+      </select>
     </div>
+    <% } else { %>
+    <div>Oops, you haven't created any album yet.</div>
+    <% } %>
+    <!-- Create an album -->
+    <form action="/createAlbum" method="post">
+      <label>Create an album</label>
+      <div class="form-group">
+       <input type="text" name="album" class="form-control" required>
+     </div>
+     <input type="submit" class="btn btn-primary" value="Create album">
+   </form>
+
+ </div> 
+
+</div>
 </body>
 </html>

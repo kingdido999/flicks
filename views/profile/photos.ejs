@@ -8,58 +8,63 @@
 	<link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-<div class="container">
+	<div class="container">
 
-	<nav class="navbar navbar-default">
-		<div class="container-fluid">
-	    <div class="navbar-header">
-	      <a class="navbar-brand" href="/">Flicks</a>
-	    </div>
-	    <div>
-	      <ul class="nav navbar-nav">
-					<li><a href="/upload">Upload</a></li>
-					<li><a href="/friends">Friends</a></li>
-					<li class="active"><a href="/profile/photos">Profile</a></li>
-					<li><a href="/logout">Logout</a></li>
-	      </ul>
-				<p class="navbar-text navbar-right">Signed in as <a href="#" class="navbar-link"><%= user.email %></a></p>
-	    </div>
-		</div>
-	</nav>
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="/">Flicks</a>
+				</div>
+				<div>
+					<ul class="nav navbar-nav">
+						<li><a href="/upload">Upload</a></li>
+						<li><a href="/friends">Friends</a></li>
+						<li class="active"><a href="/profile/photos">Profile</a></li>
+						<li><a href="/logout">Logout</a></li>
+					</ul>
+					<p class="navbar-text navbar-right">Signed in as <a href="#" class="navbar-link"><%= user.email %></a></p>
+				</div>
+			</div>
+		</nav>
 
-	<nav class="navbar navbar-default">
-		<div class="container-fluid">
-			<div>
-				<ul class="nav navbar-nav">
-					<li class="active"><a href="/profile/photos">Photostream</a></li>
-					<li><a href="/profile/albums">Albums</a></li>
-				</ul>
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div>
+					<ul class="nav navbar-nav">
+						<li class="active"><a href="/profile/photos">Photostream</a></li>
+						<li><a href="/profile/albums">Albums</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<!-- Photostream -->
+		<% if (typeof photos != 'undefined' && photos.length > 0) { %>
+		<% for(var i = 0; i < photos.length; i++) { %>
+		<div class="image-container">
+			<div class="image-wrapper">
+				<a href="<%= photos[i].path %>">
+					<img src="<%= photos[i].path %>" />
+				</a>
+			</div>
+			<div class="image-meta">
+				<form action="/addTags" method="post" class="form-add-tags">
+					<input type="hidden" name="photo_id" value="<%= photos[i].id %>">
+			        <input type="text" name="tags" class="form-control" placeholder="Separate tags with a space">
+			        <input type="submit" name="addTags" value="Add" class="btn btn-primary btn-sm">
+				</form>
+				<form action="/deletePhoto" method="post">
+					<input type="hidden" name="photo_id" value="<%= photos[i].id %>">
+					<input type="hidden" name="photo_caption" value="<%= photos[i].caption %>">
+					<input type="hidden" name="album_id" value="<%= photos[i].album_id %>">
+					<input type="submit" name="deletePhoto" value="Delete" class="btn btn-warning btn-sm">
+				</form>
 			</div>
 		</div>
-	</nav>
 
-	<!-- Photostream -->
-	<% if (typeof photos != 'undefined' && photos.length > 0) { %>
-			<% for(var i = 0; i < photos.length; i++) { %>
-				<div class="image-container">
-          <div class="image-wrapper">
-  					<a href="<%= photos[i].path %>">
-  						<img src="<%= photos[i].path %>" />
-  					</a>
-          </div>
-          <div class="image-meta">
-            <form action="/deletePhoto" method="post">
-              <input type="hidden" name="photo_id" value="<%= photos[i].id %>">
-              <input type="hidden" name="photo_caption" value="<%= photos[i].caption %>">
-              <input type="hidden" name="album_id" value="<%= photos[i].album_id %>">
-              <input type="submit" name="deletePhoto" value="Delete">
-            </form>
-          </div>
-				</div>
+		<% } %>
+		<% } %>
 
-			<% } %>
-	<% } %>
-
-</div>
+	</div>
 </body>
 </html>

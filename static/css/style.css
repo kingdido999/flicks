@@ -1,12 +1,12 @@
 .image-container {
-  height: 220px;
+  height: 260px;
   width: 300px;
   display: inline-block;
   margin: 5px;
 }
 
 .image-wrapper {
-  height: 200px;
+  height: 180px;
   width: 300px;
   overflow: hidden;
 }
@@ -18,4 +18,9 @@
 
 .image-meta {
 
+}
+
+.form-add-tags .form-control {
+	max-width: 240px;
+	display: inline;
 }

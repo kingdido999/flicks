@@ -237,6 +237,32 @@ module.exports = function(app, passport) {
 		});
 	});
 
+	// =====================================
+	// TAG =================================
+	// =====================================
+	// add tags to a photo
+	app.post('/addTags', function(req, res) {
+		// console.log(req.body);
+		var tags = req.body.tags.split(' ');
+		var photo_id = req.body.photo_id;
+
+		for (var i = 0; i < tags.length; i++) {
+			// create this tag and increment the number of tags for the photo
+			var query = "\
+				INSERT INTO Tag (photo_id, name) VALUES (?, ?);\
+				UPDATE Photo SET num_tags = num_tags + 1 WHERE id = ?";
+			var params = [photo_id, tags[i], photo_id];
+
+			connection.query(query, params, function(err, rows) {
+				if (err) throw err;
+			});
+		} 
+
+		console.log('Tags added!');
+		res.redirect('/profile/photos');
+	});
+
+
 
 	// =====================================
 	// FRIENDS =============================

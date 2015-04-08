@@ -24,3 +24,7 @@
 	max-width: 240px;
 	display: inline;
 }
+
+.form-show-tagged-photos {
+  display: inline;
+}

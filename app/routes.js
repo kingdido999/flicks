@@ -118,6 +118,25 @@ module.exports = function(app, passport) {
 		});
 	});
 
+	app.get('/profile/tags', isLoggedIn, function(req, res) {
+		var query = "\
+			SELECT DISTINCT T.name \
+			FROM Album A, Photo P, Tag T \
+			WHERE A.id = P.album_id AND P.id = T.photo_id AND A.owner_id = ?";
+		var params = [req.session.user.id];
+
+		connection.query(query, params, function(err, rows) {
+			if (err) throw err;
+
+			res.render('profile/tags', {
+				user: req.session.user,
+				tags: rows,
+				photos: req.session.user.photos,
+				tag_chosen: req.session.user.tag_chosen
+			});
+		});
+	});
+
 	// =====================================
 	// LOGOUT ==============================
 	// =====================================
@@ -166,29 +185,33 @@ module.exports = function(app, passport) {
 				connection.query(query, params, function(err, rows) {
 					if (err) throw err;
 
-					// add tags for this photo
-					var photo_id = rows[0].insertId;
-					var tags = req.body.tags.split(' ');
+					// add tags for this photo if any tag exisits
+					if (req.body.tags != '') {
+						var photo_id = rows[0].insertId;
+						var tags = req.body.tags.split(' ');
 
-					var tagQuery = "INSERT INTO Tag (photo_id, name) VALUES ";
-					var tagParams = [];
+						var tagQuery = "INSERT INTO Tag (photo_id, name) VALUES ";
+						var tagParams = [];
 
-					for (var i = 0; i < tags.length; i++) {
-						tagQuery += "(?, ?)";
-						if (i < tags.length - 1) {
-							tagQuery += ", ";
+						for (var i = 0; i < tags.length; i++) {
+							tagQuery += "(?, ?)";
+							if (i < tags.length - 1) {
+								tagQuery += ", ";
+							}
+							tagParams.push(photo_id);
+							tagParams.push(tags[i]);
 						}
-						tagParams.push(photo_id);
-						tagParams.push(tags[i]);
+
+						connection.query(tagQuery, tagParams, function(err, rows) {
+								if (err) throw err;
+
+								console.log('Tags added');
+						});
 					}
 
-					connection.query(tagQuery, tagParams, function(err, rows) {
-							if (err) throw err;
+					console.log('File uploaded!');
+					res.redirect('/upload');
 
-							console.log('Tags added');
-							console.log('File uploaded!');
-							res.redirect('/upload');
-					});
 				});
 			});
 		});
@@ -217,7 +240,6 @@ module.exports = function(app, passport) {
 
 	// delete an album
 	app.post('/deleteAlbum', function (req, res) {
-		// console.log(req.body);
 		var query = "\
 			DELETE FROM Album WHERE id = ?;\
 			UPDATE User SET num_albums = num_albums - 1 WHERE id = (\
@@ -286,13 +308,29 @@ module.exports = function(app, passport) {
 		res.redirect('/profile/photos');
 	});
 
+	// show photos with the tag that user clicked
+	app.post('/showTaggedPhotos', function(req, res) {
+		var tag_name = req.body.tag_name;
+		var query = "\
+			SELECT P.path \
+			FROM User U, Album A, Photo P, Tag T \
+			WHERE U.id = A.owner_id AND A.id = P.album_id AND P.id = T.photo_id \
+			AND U.id = ? AND T.name = ?";
+		var params = [req.session.user.id, tag_name];
 
+		connection.query(query, params, function(err, rows) {
+			if (err) throw err;
+
+			req.session.user.photos = rows;
+			req.session.user.tag_chosen = tag_name;
+			res.redirect('/profile/tags');
+		});
+	});
 
 	// =====================================
 	// FRIENDS =============================
 	// =====================================
 	app.get('/friends', isLoggedIn, function(req, res) {
-		// console.log(req.session.user);
 		var user_id = req.session.user.id;
 		var query = "\
 			SELECT email FROM User WHERE id IN (\
@@ -338,8 +376,6 @@ module.exports = function(app, passport) {
 
 	// add a friend
 	app.post('/addFriend', function(req, res) {
-		// console.log(req.session.user.id);
-		// console.log(req.body.friend);
 		var user_id = req.session.user.id;
 		var friend_email = req.body.friend;
 		var query = "\

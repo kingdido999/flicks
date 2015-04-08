@@ -146,8 +146,9 @@ module.exports = function(app, passport) {
 	app.post('/upload', function(req, res) {
 		// get the file object
 		var file = req.files.uploadFile;
-		var newPath = rootDir + '/uploads/' + file.originalFilename;
-		var relPath = uploadDir + file.originalFilename;
+		var renamedFile = rename(file.originalFilename);
+		var newPath = rootDir + '/uploads/' + renamedFile;
+		var relPath = uploadDir + renamedFile;
 
 		// insert a new photo
 		// update the number of photos in album
@@ -375,4 +376,8 @@ function removeItemFromArray(key, value, data) {
 	}
 
 	return data;
+}
+
+function rename(filename) {
+	return Date.now() + '_' + filename.toLowerCase();
 }

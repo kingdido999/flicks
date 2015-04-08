@@ -77,14 +77,19 @@ connection.query('                                            \
 CREATE TABLE Photo (                                          \
     id                INT           NOT NULL AUTO_INCREMENT,  \
     album_id          INT           NOT NULL,                 \
+    owner_id          INT           NOT NULL,                 \
     caption           VARCHAR(255)  NOT NULL,                 \
     path              VARCHAR(255)  NOT NULL,                 \
     date_of_creation  TIMESTAMP     DEFAULT CURRENT_TIMESTAMP,\
     num_tags          INT           DEFAULT 0,                \
     num_likes         INT           DEFAULT 0,                \
+    num_comments      INT           DEFAULT 0,                \
     PRIMARY KEY (id),                                         \
     FOREIGN KEY (album_id)                                    \
       REFERENCES Album(id)                                    \
+      ON DELETE CASCADE,                                      \
+    FOREIGN KEY (owner_id)                                    \
+      REFERENCES User(id)                                     \
       ON DELETE CASCADE                                       \
 )');
 

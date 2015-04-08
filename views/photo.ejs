@@ -31,18 +31,25 @@
 				</div>
 			</nav>
 
-      <!-- Display photo -->
+
 			<% if (typeof photo != 'undefined') { %>
+        <!-- photo -->
         <div class="image-large">
           <a href="<%= photo.path %>">
             <img src="<%= photo.path %>" />
           </a>
         </div>
-			<% } %>
 
-      <!-- Display comments -->
+        <!-- caption -->
+        <div class="photo-caption">
+          <h4><%= photo.caption %></h4>
+        </div>
 
-      <!-- Leave a comment -->
+        <!-- date -->
+        <div class="">
+          <%= photo.date_of_creation %>
+        </div>
+      <% } %>
 
 
     </div>

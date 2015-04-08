@@ -190,9 +190,15 @@ module.exports = function(app, passport) {
 		// insert a new photo
 		// update the number of photos in album
 		var query = "\
-			INSERT INTO Photo (album_id, caption, path) VALUES (?, ?, ?);\
+			INSERT INTO Photo (album_id, owner_id, caption, path) VALUES (?, ?, ?, ?);\
 			UPDATE Album SET num_photos = num_photos + 1 WHERE id = ?";
-		var params = [req.body.album, file.originalFilename, relPath, req.body.album];
+		var params = [
+			req.body.album,
+			req.session.user.id,
+			file.originalFilename,
+			relPath,
+			req.body.album
+			];
 
 		// read file from tmp storage
 		fs.readFile(file.path, function(err, data) {
@@ -277,13 +283,14 @@ module.exports = function(app, passport) {
 	// =====================================
 	app.get('/photo', function(req, res) {
 		var photo_id = req.query.id;
-		var query = "SELECT path FROM Photo WHERE id = ?";
+		var query = "\
+			SELECT caption, path, date_of_creation \
+			FROM Photo P \
+			WHERE id = ?";
 		var params = [photo_id];
 
 		connection.query(query, params, function(err, rows) {
 			if (err) throw err;
-
-			console.log(rows);
 
 			res.render('photo.ejs', {
 				photo: rows[0]

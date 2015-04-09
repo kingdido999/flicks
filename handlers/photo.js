@@ -8,8 +8,10 @@ connection.query('USE ' + dbconfig.database);
 module.exports = {
   getPhoto: function(req, res) {
 		var photo_id = req.query.id;
+    var canComment = true;
+
 		var query = "\
-			SELECT caption, path, date_of_creation \
+			SELECT owner_id, caption, path, date_of_creation \
 			FROM Photo P \
 			WHERE id = ?";
 		var params = [photo_id];
@@ -17,9 +19,22 @@ module.exports = {
 		connection.query(query, params, function(err, rows) {
 			if (err) throw err;
 
+      console.log(req.session.user);
+
+      // check if user has signed in
+      if (typeof req.session.user != 'undefined') {
+        var owner_id = rows[0].owner_id;
+
+        // users cannot leave comment for their own photos
+        if (owner_id == req.session.user.id) {
+          canComment = false;
+        }
+      }
+
 			res.render('photo.ejs', {
 				user: req.session.user,
-				photo: rows[0]
+				photo: rows[0],
+        canComment: canComment
 			});
 		})
 	},

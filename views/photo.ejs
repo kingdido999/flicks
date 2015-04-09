@@ -60,6 +60,7 @@
 	        <h4>Leave a comment</h4>
 	        <form action="/addComment" method="post">
 	          <div class="form-group">
+							<input type="hidden" name="photo_id" value="<%= photo.id %>">
 	            <input type="text" name="comment" value="" class="form-control">
 	          </div>
 	          <input type="submit" name="addComment" value="Submit">

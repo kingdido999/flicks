@@ -2,6 +2,20 @@
 
 A picture sharing website running on Node.js + Express + MySQL.
 
+## Installation
+
+First, configure your MySQL database connection in `config/database.js`.
+
+Then create a database according to your configuration.
+
+```
+git clone https://github.com/kingdido999/flicks
+cd flicks
+npm install
+node config/init.js
+node app.js
+```
+
 ## Data
 
 #### Users

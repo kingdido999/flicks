@@ -97,7 +97,7 @@ connection.query('                                            \
 CREATE TABLE Tag (                                            \
     photo_id          INT           NOT NULL,                 \
     name              VARCHAR(255)  NOT NULL,                 \
-    PRIMARY KEY (photo_id, name),                              \
+    PRIMARY KEY (photo_id, name),                             \
     FOREIGN KEY (photo_id)                                    \
       REFERENCES Photo(id)                                    \
       ON DELETE CASCADE                                       \
@@ -107,6 +107,7 @@ connection.query('                                            \
 CREATE TABLE Comment (                                        \
     id                INT           NOT NULL AUTO_INCREMENT,  \
     owner_id          INT,                                    \
+    owner_email       VARCHAR(255)  NOT NULL,                 \
     photo_id          INT           NOT NULL,                 \
     text              TEXT          NOT NULL,                 \
     date_of_creation  TIMESTAMP     DEFAULT CURRENT_TIMESTAMP,\

@@ -35,3 +35,23 @@
 .form-show-tagged-photos {
   display: inline;
 }
+
+.comment-meta {
+  display: inline;
+}
+
+.comment-author, .comment-date {
+  display: inline-block;
+}
+
+.comment-author {
+  font-weight: bold;
+}
+
+.comment-date {
+  float: right;
+}
+
+.comment-text {
+  margin: 20px;
+}

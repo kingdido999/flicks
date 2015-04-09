@@ -1,5 +1,5 @@
 /**
- * Initialize database and tables.
+ * Initialize tables.
  */
 
 var mysql = require('mysql');

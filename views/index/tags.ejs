@@ -8,86 +8,84 @@
 	<link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <div class="container">
+	<div class="container">
 
-			<nav class="navbar navbar-default">
-				<div class="container-fluid">
-					<div class="navbar-header">
-						<a class="navbar-brand" href="/">Flicks</a>
-					</div>
-					<div>
-            <ul class="nav navbar-nav">
-              <% if (typeof user == 'undefined') { %>
-                <li><a href="/login">Login</a></li>
-  							<li><a href="/signup">Signup</a></li>
-              <% } else { %>
-                <li><a href="/upload">Upload</a></li>
-      					<li><a href="/friends">Friends</a></li>
-      					<li><a href="/profile/photos">Profile</a></li>
-      					<li><a href="/logout">Logout</a></li>
-              <% }%>
-						</ul>
-					</div>
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="/">Flicks</a>
 				</div>
-			</nav>
-
-      <nav class="navbar navbar-default">
-        <div class="container-fluid">
-          <div>
-            <ul class="nav navbar-nav">
-              <li><a href="/">Photostream</a></li>
-              <li><a href="/albums">Albums</a></li>
-              <li class="active"><a href="/tags">Tags</a></li>
-              <li><a href="/activity">Activity</a></li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-
-      <div class="row">
-        <!-- Tags -->
-        <% if (typeof tags != 'undefined' && tags.length > 0) { %>
-            <% for(var i = 0; i < tags.length; i++) { %>
-              <form action="/showAllTaggedPhotos" method="post" class="form-show-tagged-photos">
-                <input type="hidden" name="tag_name" value="<%= tags[i].name %>">
-                <input type="submit" value="<%= tags[i].name %>" class="btn btn-primary btn-xs">
-              </form>
-            <% } %>
-        <% } %>
-				<!-- Popular tags -->
-				<!-- <form action="/showPopularTags" method="post">
-					<input type="submit" name="showPopularTags" value="Show p">
-				</form>
-				<% if (typeof tags != 'undefined' && tags.length > 0) { %>
-						<h3>Popular tags</h3>
-						<% for(var i = 0; i < tags.length; i++) { %>
-							<form action="/showAllTaggedPhotos" method="post" class="form-show-tagged-photos">
-								<input type="hidden" name="tag_name" value="<%= tags[i].name %>">
-								<input type="submit" value="<%= tags[i].name %>" class="btn btn-primary btn-xs">
-							</form>
-						<% } %>
-				<% } %> -->
-      </div>
-
-			<div class="row">
-				<!-- Show tag chosen -->
-				<% if (typeof tag_chosen != 'undefined') { %>
-				<h3>Tag: <%= tag_chosen %></h3>
-				<% } %>
-				<!-- All photos with the tag -->
-				<% if (typeof photos != 'undefined' && photos.length > 0) { %>
-						<% for(var i = 0; i < photos.length; i++) { %>
-							<div class="image-container">
-								<div class="image-wrapper">
-									<a href="<%= photos[i].path %>">
-										<img src="<%= photos[i].path %>" />
-									</a>
-								</div>
-							</div>
-						<% } %>
-				<% } %>
+				<div>
+					<ul class="nav navbar-nav">
+						<% if (typeof user == 'undefined') { %>
+						<li><a href="/login">Login</a></li>
+						<li><a href="/signup">Signup</a></li>
+						<% } else { %>
+						<li><a href="/upload">Upload</a></li>
+						<li><a href="/friends">Friends</a></li>
+						<li><a href="/profile/photos">Profile</a></li>
+						<li><a href="/logout">Logout</a></li>
+						<% }%>
+					</ul>
+				</div>
 			</div>
+		</nav>
 
-    </div>
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div>
+					<ul class="nav navbar-nav">
+						<li><a href="/">Photostream</a></li>
+						<li><a href="/albums">Albums</a></li>
+						<li class="active"><a href="/tags">Tags</a></li>
+						<li><a href="/activity">Activity</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<div class="row">
+			<!-- Tags -->
+			<% if (typeof tags != 'undefined' && tags.length > 0) { %>
+			<h3>All tags</h3>
+			<% for(var i = 0; i < tags.length; i++) { %>
+			<form action="/showAllTaggedPhotos" method="post" class="form-show-tagged-photos">
+				<input type="hidden" name="tag_name" value="<%= tags[i].name %>">
+				<input type="submit" value="<%= tags[i].name %>" class="btn btn-primary btn-xs">
+			</form>
+			<% } %>
+			<% } %>
+			<!-- Popular tags -->
+			<% if (typeof popular_tags != 'undefined' && popular_tags.length > 0) { %>
+			<h3>Popular tags</h3>
+			<% for(var i = 0; i < popular_tags.length; i++) { %>
+			<form action="/showAllTaggedPhotos" method="post" class="form-show-tagged-photos">
+				<input type="hidden" name="tag_name" value="<%= popular_tags[i].name %>">
+				<input type="submit" value="<%= popular_tags[i].name %>" class="btn btn-primary btn-xs">
+			</form>
+			<% } %>
+			<% } %>
+		</div>
+
+		<div class="row">
+			<!-- Show tag chosen -->
+			<% if (typeof tag_chosen != 'undefined') { %>
+			<h3>Tag: <%= tag_chosen %></h3>
+			<% } %>
+			<!-- All photos with the tag -->
+			<% if (typeof photos != 'undefined' && photos.length > 0) { %>
+			<% for(var i = 0; i < photos.length; i++) { %>
+			<div class="image-container">
+				<div class="image-wrapper">
+					<a href="<%= photos[i].path %>">
+						<img src="<%= photos[i].path %>" />
+					</a>
+				</div>
+			</div>
+			<% } %>
+			<% } %>
+		</div>
+
+	</div>
 </body>
 </html>

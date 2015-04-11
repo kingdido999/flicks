@@ -18,6 +18,7 @@ CREATE TABLE User (                                           \
     date_of_birth     DATE,                                   \
     date_of_creation  TIMESTAMP     DEFAULT CURRENT_TIMESTAMP,\
     num_albums        INT           DEFAULT 0,                \
+    num_photos        INT           DEFAULT 0,                \
     num_friends       INT           DEFAULT 0,                \
     num_comments      INT           DEFAULT 0,                \
     PRIMARY KEY(id)                                           \

@@ -48,7 +48,7 @@ Each comment is identified by a unique comment id and has the following attribut
 
 - [x] **Becoming a registered user.** Before being able to upload photos a user should register by providing their first name, last name, email address, date of birth, and a password. If user already exists in the database with the same email address an error message should be produced. The other additional information about each user is optional.
 - [x] **Adding and Listing Friends.** You should allow a user to add a new friend on the friend list. For simplicity, you do not have to verify the friendship relationship. Also, you should allow the user to search for other users in the system (in order to find friends to add.) Finally, you must allow a user to list his/her friends.
-- [ ] **User activity.** To motivate users in using the site we'd like to identify the ones who make the largest contribution and list them on the site. We'll measure the contribution of a user as the number of photos they have uploaded plus the number of comments they have left for photos belonging to other users. The top 10 users should be reported.
+- [x] **User activity.** To motivate users in using the site we'd like to identify the ones who make the largest contribution and list them on the site. We'll measure the contribution of a user as the number of photos they have uploaded plus the number of comments they have left for photos belonging to other users. The top 10 users should be reported.
 
 #### Album and photo management
 

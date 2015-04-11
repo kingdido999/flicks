@@ -36,13 +36,15 @@ module.exports = {
 		// update the number of photos in album
 		var query = "\
 			INSERT INTO Photo (album_id, owner_id, caption, path) VALUES (?, ?, ?, ?);\
-			UPDATE Album SET num_photos = num_photos + 1 WHERE id = ?";
+			UPDATE Album SET num_photos = num_photos + 1 WHERE id = ?;\
+			UPDATE User SET num_photos = num_photos + 1 WHERE id = ?";
 		var params = [
 			req.body.album,
 			req.session.user.id,
 			file.originalFilename,
 			relPath,
-			req.body.album
+			req.body.album,
+			req.session.user.id
 			];
 
 		// read file from tmp storage
@@ -92,8 +94,10 @@ module.exports = {
 			console.log('Album name could not be empty!');
 			res.redirect('/upload');
 		} else {
-			var query = "INSERT INTO Album (owner_id, name) VALUES (?, ?)";
-			var params = [req.session.user.id, req.body.album];
+			var query = "\
+				INSERT INTO Album (owner_id, name) VALUES (?, ?);\
+				UPDATE User SET num_albums = num_albums + 1 WHERE id = ?";
+			var params = [req.session.user.id, req.body.album, req.session.user.id];
 
 			connection.query(query, params, function(err, rows) {
 				if (err) throw err;

@@ -36,19 +36,19 @@
           <div>
             <ul class="nav navbar-nav">
               <li><a href="/">Photostream</a></li>
-              <li class="active"><a href="/albums">Albums</a></li>
+              <li><a href="/albums">Albums</a></li>
 							<li><a href="/tags">Tags</a></li>
-              <li><a href="/activity">Activity</a></li>
+              <li class="active"><a href="/activity">Activity</a></li>
             </ul>
           </div>
         </div>
       </nav>
 
-      <!-- Albums -->
-    	<% if (typeof albums != 'undefined' && albums.length > 0) { %>
-    			<% for(var i = 0; i < albums.length; i++) { %>
+      <!-- Emails of users with the most contribution -->
+    	<% if (typeof users != 'undefined' && users.length > 0) { %>
+    			<% for(var i = 0; i < users.length; i++) { %>
     				<ul>
-    					<li><%= albums[i].name %></li>
+    					<li><%= users[i].email %>, Photos: <%= users[i].num_photos %>, Comments: <%= users[i].num_comments %></li>
     				</ul>
     			<% } %>
     	<% } %>

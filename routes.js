@@ -25,6 +25,7 @@ module.exports = function(app, passport) {
 	app.get('/albums', routes.album);
 	app.get('/tags', routes.tags);
 	app.post('/showAllTaggedPhotos', routes.showAllTaggedPhotos);
+	app.get('/activity', routes.activity);
 
 	// =====================================
 	// PROFILE =============================

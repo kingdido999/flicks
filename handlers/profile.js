@@ -15,7 +15,7 @@ module.exports = {
   photos: function(req, res) {
     // get photos for this user
     var query = "SELECT id, album_id, caption, path FROM Photo WHERE owner_id = ?";
-    var params = [req.user.id]
+    var params = [req.user.id];
 
     // store user in session
     req.session.user = req.user;
@@ -66,9 +66,8 @@ module.exports = {
   deleteAlbum: function (req, res) {
 		var query = "\
 			DELETE FROM Album WHERE id = ?;\
-			UPDATE User SET num_albums = num_albums - 1 WHERE id = (\
-				SELECT owner_id FROM Album WHERE id = ?)";
-		var params = [req.body.album_id, req.body.album_id];
+			UPDATE User SET num_albums = num_albums - 1 WHERE id = ?";
+		var params = [req.body.album_id, req.session.user.id];
 
 		connection.query(query, params, function(err, rows) {
 			if (err) throw err;
@@ -87,8 +86,9 @@ module.exports = {
 		// delete this photo and decrement the number of photos in the album
 		var query = "\
 			DELETE FROM Photo WHERE id = ?;\
-			UPDATE Album SET num_photos = num_photos - 1 WHERE id = ?";
-		var params = [photo_id, album_id];
+			UPDATE Album SET num_photos = num_photos - 1 WHERE id = ?;\
+			UPDATE User SET num_photos = num_photos - 1 WHERE id = ?";
+		var params = [photo_id, album_id, req.session.user.id];
 
 		connection.query(query, params, function(err, rows) {
 			if (err) throw err;

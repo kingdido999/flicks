@@ -65,5 +65,23 @@ module.exports = {
 
 			res.redirect('/tags');
 		});
-	}
+	},
+
+  activity: function(req, res) {
+    var query = "\
+      SELECT email, num_photos, num_comments, (num_photos + num_comments) as contribution\
+      FROM User\
+      GROUP BY id\
+      ORDER BY contribution DESC\
+      LIMIT 10";
+
+    connection.query(query, function(err, rows) {
+      if (err) throw err;
+
+      res.render('index/activity.ejs', {
+        user: req.user,
+        users: rows
+      });
+    });
+  }
 }

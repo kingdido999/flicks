@@ -33,16 +33,17 @@
 
 
 		<% if (typeof photo != 'undefined') { %>
+
+		<!-- caption -->
+		<div class="photo-caption">
+			<h4><%= photo.caption %></h4>
+		</div>		
+
 		<!-- photo -->
 		<div class="image-large">
 			<a href="<%= photo.path %>">
 				<img src="<%= photo.path %>" />
 			</a>
-		</div>
-
-		<!-- caption -->
-		<div class="photo-caption">
-			<h4><%= photo.caption %></h4>
 		</div>
 
 		<!-- date -->
@@ -54,8 +55,17 @@
 
 		<!-- number of likes -->
 		<div class="photo-num-likes">
-			<%= photo.num_likes %> likes
+			<%= photo.num_likes %> likes:
 		</div>
+		<!-- liked user -->
+		<% if (typeof likedUser != 'undefined' && likedUser.length > 0) { %>
+		<div class="photo-liked-user">
+			<% for (var i = 0; i < likedUser.length; i++) { %> 
+				<%= likedUser[i].email %>
+				<% if (i < likedUser.length - 1) { %>,<% } %>
+			<% } %>
+		</div>
+		<% } %>
 		<!-- like this photo -->
 		<% if (typeof user != 'undefined') { %>
 		<div class="photo-like">

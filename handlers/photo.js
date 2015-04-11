@@ -29,49 +29,64 @@ module.exports = {
         }
       }
 
-      // get comments
-      var commentQuery = "\
-        SELECT owner_email, text, date_of_creation \
-        FROM Comment \
-        WHERE photo_id = ?";
-      var commentParams = [photo_id];
+      var likedUserQuery = "\
+        SELECT email FROM User WHERE id IN (\
+        SELECT user_id FROM Likes WHERE photo_id = ?)";
+      var likedUserParams = [photo_id];
 
-      connection.query(commentQuery, commentParams, function(err, result_comments) {
+      connection.query(likedUserQuery, likedUserParams, function(err, result_likedUser) {
         if (err) throw err;
 
-        // indicate user has liked this photo or not
-        var liked = false;
+        console.log(result_likedUser);
 
-        if (typeof req.session.user != 'undefined') {
-          var likesQuery = "SELECT * FROM Likes WHERE user_id = ? AND photo_id = ?";
-          var likesParams = [req.session.user.id, photo_id];
+        // get comments
+        var commentQuery = "\
+          SELECT owner_email, text, date_of_creation \
+          FROM Comment \
+          WHERE photo_id = ?";
+        var commentParams = [photo_id];
 
-          connection.query(likesQuery, likesParams, function(err, result_likes) {
-            if (err) throw err;
+        connection.query(commentQuery, commentParams, function(err, result_comments) {
+          if (err) throw err;
 
-            if (result_likes.length > 0) {
-              liked = true;
-            }
+          // indicate user has liked this photo or not
+          var liked = false;
 
+          if (typeof req.session.user != 'undefined') {
+            var likesQuery = "SELECT * FROM Likes WHERE user_id = ? AND photo_id = ?";
+            var likesParams = [req.session.user.id, photo_id];
+
+            connection.query(likesQuery, likesParams, function(err, result_likes) {
+              if (err) throw err;
+
+              if (result_likes.length > 0) {
+                liked = true;
+              }
+
+              res.render('photo.ejs', {
+                user: req.session.user,
+                photo: result_photo[0],
+                likedUser: result_likedUser,
+                canComment: canComment,
+                comments: result_comments,
+                liked: liked
+              });
+            });
+          } else {
             res.render('photo.ejs', {
               user: req.session.user,
               photo: result_photo[0],
+              likedUser: result_likedUser,
               canComment: canComment,
               comments: result_comments,
               liked: liked
             });
-          });
-        } else {
-          res.render('photo.ejs', {
-            user: req.session.user,
-            photo: result_photo[0],
-            canComment: canComment,
-            comments: result_comments,
-            liked: liked
-          });
-        }
+          }
 
+        });
       });
+
+
 		});
 	},
 

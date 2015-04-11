@@ -36,6 +36,14 @@
   display: inline;
 }
 
+.photo-date {
+  float: right;
+}
+
+.photo-num-likes, .photo-liked-user {
+  display: inline;
+}
+
 .comment-meta {
   display: inline;
 }

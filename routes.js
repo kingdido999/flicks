@@ -49,6 +49,8 @@ module.exports = function(app, passport) {
 	// =====================================
 	app.get('/photo', photo.getPhoto);
 	app.post('/addComment', photo.addComment);
+	app.post('/like', photo.like);
+	app.post('/unlike', photo.unlike);
 
 	// =====================================
 	// FRIENDS =============================

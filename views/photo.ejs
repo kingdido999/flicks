@@ -8,99 +8,122 @@
 	<link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <div class="container">
+	<div class="container">
 
-			<nav class="navbar navbar-default">
-				<div class="container-fluid">
-					<div class="navbar-header">
-						<a class="navbar-brand" href="/">Flicks</a>
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="/">Flicks</a>
+				</div>
+				<div>
+					<ul class="nav navbar-nav">
+						<% if (typeof user == 'undefined') { %>
+						<li><a href="/login">Login</a></li>
+						<li><a href="/signup">Signup</a></li>
+						<% } else { %>
+						<li><a href="/upload">Upload</a></li>
+						<li><a href="/friends">Friends</a></li>
+						<li><a href="/profile/photos">Profile</a></li>
+						<li><a href="/logout">Logout</a></li>
+						<% }%>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+
+		<% if (typeof photo != 'undefined') { %>
+		<!-- photo -->
+		<div class="image-large">
+			<a href="<%= photo.path %>">
+				<img src="<%= photo.path %>" />
+			</a>
+		</div>
+
+		<!-- caption -->
+		<div class="photo-caption">
+			<h4><%= photo.caption %></h4>
+		</div>
+
+		<!-- date -->
+		<div class="photo-date">
+			<%= photo.date_of_creation %>
+		</div>
+
+		<!-- tags -->
+
+		<!-- number of likes -->
+		<div class="photo-num-likes">
+			<%= photo.num_likes %> likes
+		</div>
+		<!-- like this photo -->
+		<% if (typeof user != 'undefined') { %>
+		<div class="photo-like">
+			<!-- if user has not liked yet -->
+			<% if (!liked) { %>
+			<form action="/like" method="post">
+				<input type="hidden" name="photo_id" value="<%= photo.id %>">
+				<input type="hidden" name="user_id" value="<%= user.id %>">
+				<input type="submit" name="likePhoto" value="Like">
+			</form>
+			<% } else { %>
+			<form action="/unlike" method="post">
+				<input type="hidden" name="photo_id" value="<%= photo.id %>">
+				<input type="hidden" name="user_id" value="<%= user.id %>">
+				<input type="submit" name="unlikePhoto" value="Unlike">
+			</form>
+			<% } %>
+		</div>
+		<% } %>
+		<hr>
+
+		<!-- comments -->
+		<h2>Comments</h2>
+		<hr>
+		<% if (typeof comments != 'undefined' && comments.length > 0) { %>
+		<div class="comments">
+			<% for(var i = 0; i < comments.length; i++) { %>
+			<div class="comment">
+				<div class="comment-meta">
+					<div class="comment-author">
+						<%= comments[i].owner_email %>
 					</div>
-					<div>
-						<ul class="nav navbar-nav">
-              <% if (typeof user == 'undefined') { %>
-                <li><a href="/login">Login</a></li>
-  							<li><a href="/signup">Signup</a></li>
-              <% } else { %>
-                <li><a href="/upload">Upload</a></li>
-      					<li><a href="/friends">Friends</a></li>
-      					<li><a href="/profile/photos">Profile</a></li>
-      					<li><a href="/logout">Logout</a></li>
-              <% }%>
-						</ul>
+					<span>says: </span>
+					<div class="comment-date">
+						<%= comments[i].date_of_creation %>
 					</div>
 				</div>
-			</nav>
+				<div class="comment-text">
+					<%= comments[i].text %>
+				</div>
+			</div>
+			<hr>
+			<% } %>
+		</div>
+		<% } %>
+
+		<!-- leave a comment -->
+		<!-- users cannot leave comments for their own photos -->
+		<% if (typeof canComment != 'undefined' && canComment == true) { %>
+		<h2>Leave a comment</h2>
+		<form action="/addComment" method="post">
+			<% if (typeof user == 'undefined') { %>
+			<div class="form-group">
+				<label>Email</label>
+				<input type="email" name="author_email" value="" required>
+			</div>
+			<% } %>
+			<input type="hidden" name="photo_id" value="<%= photo.id %>">
+			<div class="form-group">
+				<input type="text" name="comment" value="" class="form-control" required>
+			</div>
+			<input type="submit" name="addComment" value="Submit">
+		</form>
+		<% } %>
+
+		<% } %>
 
 
-			<% if (typeof photo != 'undefined') { %>
-        <!-- photo -->
-        <div class="image-large">
-          <a href="<%= photo.path %>">
-            <img src="<%= photo.path %>" />
-          </a>
-        </div>
-
-        <!-- caption -->
-        <div class="photo-caption">
-          <h4><%= photo.caption %></h4>
-        </div>
-
-        <!-- date -->
-        <div class="">
-          <%= photo.date_of_creation %>
-        </div>
-
-        <!-- tags -->
-
-				<hr>
-
-        <!-- comments -->
-				<h2>Comments</h2>
-				<hr>
-				<% if (typeof comments != 'undefined' && comments.length > 0) { %>
-					<div class="comments">
-						<% for(var i = 0; i < comments.length; i++) { %>
-								<div class="comment">
-									<div class="comment-meta">
-										<div class="comment-author">
-											<%= comments[i].owner_email %>
-										</div>
-										<span>says: </span>
-										<div class="comment-date">
-											<%= comments[i].date_of_creation %>
-										</div>
-									</div>
-									<div class="comment-text">
-										<%= comments[i].text %>
-									</div>
-								</div>
-								<hr>
-						<% } %>
-					</div>
-				<% } %>
-
-        <!-- leave a comment -->
-        <!-- users cannot leave comments for their own photos -->
-				<% if (typeof canComment != 'undefined' && canComment == true) { %>
-	        <h2>Leave a comment</h2>
-	        <form action="/addComment" method="post">
-						<% if (typeof user == 'undefined') { %>
-							<div class="form-group">
-								<label>Email</label>
-								<input type="email" name="author_email" value="" required>
-							</div>
-						<% } %>
-						<input type="hidden" name="photo_id" value="<%= photo.id %>">
-	          <div class="form-group">
-	            <input type="text" name="comment" value="" class="form-control" required>
-	          </div>
-	          <input type="submit" name="addComment" value="Submit">
-	        </form>
-				<% } %>
-
-      <% } %>
-
-
-    </div>
+	</div>
 </body>
 </html>

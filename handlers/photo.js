@@ -11,7 +11,7 @@ module.exports = {
     var canComment = true;
 
 		var query = "\
-			SELECT id, owner_id, caption, path, date_of_creation \
+			SELECT id, owner_id, caption, path, date_of_creation, num_likes \
 			FROM Photo P \
 			WHERE id = ?";
 		var params = [photo_id];
@@ -39,14 +39,40 @@ module.exports = {
       connection.query(commentQuery, commentParams, function(err, result_comments) {
         if (err) throw err;
 
-        res.render('photo.ejs', {
-          user: req.session.user,
-          photo: result_photo[0],
-          canComment: canComment,
-          comments: result_comments
-        });
+        // indicate user has liked this photo or not
+        var liked = false;
+
+        if (typeof req.session.user != 'undefined') {
+          var likesQuery = "SELECT * FROM Likes WHERE user_id = ? AND photo_id = ?";
+          var likesParams = [req.session.user.id, photo_id];
+
+          connection.query(likesQuery, likesParams, function(err, result_likes) {
+            if (err) throw err;
+
+            if (result_likes.length > 0) {
+              liked = true;
+            }
+
+            res.render('photo.ejs', {
+              user: req.session.user,
+              photo: result_photo[0],
+              canComment: canComment,
+              comments: result_comments,
+              liked: liked
+            });
+          });
+        } else {
+          res.render('photo.ejs', {
+            user: req.session.user,
+            photo: result_photo[0],
+            canComment: canComment,
+            comments: result_comments,
+            liked: liked
+          });
+        }
+
       });
-		})
+		});
 	},
 
   addComment: function(req, res) {
@@ -81,6 +107,39 @@ module.exports = {
         res.redirect('/photo?id=' + photo_id);
       });
 		}
-
 	},
+
+  like: function (req, res) {
+    var user_id = req.body.user_id;
+    var photo_id = req.body.photo_id;
+
+    var query = "\
+      INSERT INTO Likes (user_id, photo_id) VALUES (?, ?);\
+      UPDATE Photo SET num_likes = num_likes + 1 WHERE id = ?";
+    var params = [user_id, photo_id, photo_id];
+
+    connection.query(query, params, function (err, rows) {
+      if (err) throw err;
+
+      console.log('Liked!');
+      res.redirect('/photo?id=' + photo_id);
+    });
+  },
+
+  unlike: function (req, res) {
+    var user_id = req.body.user_id;
+    var photo_id = req.body.photo_id;
+
+    var query = "\
+      DELETE FROM Likes WHERE user_id = ? AND photo_id = ?;\
+      UPDATE Photo SET num_likes = num_likes - 1 WHERE id = ?";
+    var params = [user_id, photo_id, photo_id];
+
+    connection.query(query, params, function (err, rows) {
+      if (err) throw err;
+
+      console.log('Unliked!');
+      res.redirect('/photo?id=' + photo_id);
+    });
+  }
 }

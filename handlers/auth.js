@@ -8,7 +8,7 @@ module.exports = {
   },
 
   postLogin: passport.authenticate('local-login', {
-    successRedirect : '/', // redirect to the secure profile section
+    successRedirect : '/profile/photos', // redirect to the secure profile section
     failureRedirect : '/login', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
   }),
@@ -19,13 +19,16 @@ module.exports = {
   },
 
   postSignup: passport.authenticate('local-signup', {
-    successRedirect : '/', // redirect to the secure profile section
+    successRedirect : '/profile/photos', // redirect to the secure profile section
     failureRedirect : '/signup', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
   }),
 
   logout: function(req, res) {
 		req.logout();
+    if (typeof req.session.user != 'undefined') {
+      delete req.session.user;
+    }
 		res.redirect('/');
 	}
 }

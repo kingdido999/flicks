@@ -64,7 +64,7 @@ Each comment is identified by a unique comment id and has the following attribut
 #### Comments
 
 - [x] **Leaving comments.** Both registered and anonymous users can leave comments. Users cannot leave comments for their own photos. If a registered user leaves a comment then this counts towards their contribution score as described above.
-- [ ] **Like functionality.** We want to add a Like functionality. If a user likes a photo, should be able to add a like to the photo. Also, we must be able to see how many likes a photo has and the users that liked this photo.
+- [x] **Like functionality.** We want to add a Like functionality. If a user likes a photo, should be able to add a like to the photo. Also, we must be able to see how many likes a photo has and the users that liked this photo.
 
 #### Recommendations
 

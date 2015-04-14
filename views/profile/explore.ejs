@@ -40,6 +40,21 @@
 			</div>
 		</nav>
 
+    <!-- Photostream -->
+    <% if (typeof photos != 'undefined' && photos.length > 0) { %>
+      <% for(var i = 0; i < photos.length; i++) { %>
+
+      <div class="image-container">
+        <div class="image-wrapper">
+          <a href="<%= photos[i].path %>">
+            <img src="<%= photos[i].path %>" />
+          </a>
+        </div>
+      </div>
+
+      <% } %>
+    <% } %>
+
 	</div>
 </body>
 </html>

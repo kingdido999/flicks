@@ -142,10 +142,42 @@ module.exports = {
 		});
 	},
 
+  // Given the type of photos uploaded by a user we'd like to make some
+  // recommendations to them about other photos they may like.
+  //
+  // Take the five most commonly used tags among the user's photos.
+  // Perform a disjunctive search through all the photos for these five tags.
+  // A photo that contains all five tags should be ranked higher than one that
+  // contained four of the tags and so on. Between two photos that contain the
+  // same number of matched tags prefer the one that is more concise,
+  // i.e., the one that has fewer tags over all.
   explore: function(req, res) {
+    var query = "\
+      SELECT path\
+      FROM Photo\
+      WHERE id IN\
+      (\
+        SELECT photo_id\
+        FROM Tag\
+        WHERE name IN\
+        (\
+          SELECT T.name \
+          FROM Tag T, Photo P \
+          WHERE T.photo_id = P.id AND P.owner_id = ?\
+        )\
+      )\
+      LIMIT 5";
+    var params = [req.session.user.id];
 
-    res.render('profile/explore', {
-      user: req.session.user,
+    connection.query(query, params, function(err, rows) {
+      if (err) throw err;
+
+      console.log(rows);
+
+      res.render('profile/explore', {
+        user: req.session.user,
+        photos: rows
+      });
     });
   }
 }

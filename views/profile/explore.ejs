@@ -1,4 +1,4 @@
-<!-- views/profile/photos.ejs -->
+<!-- views/profile/explore.ejs -->
 <!doctype html>
 <html>
 <head>
@@ -31,37 +31,14 @@
 			<div class="container-fluid">
 				<div>
 					<ul class="nav navbar-nav">
-						<li class="active"><a href="/profile/photos">Photostream</a></li>
+						<li><a href="/profile/photos">Photostream</a></li>
 						<li><a href="/profile/albums">Albums</a></li>
 						<li><a href="/profile/tags">Tags</a></li>
-						<li><a href="/profile/explore">Explore</a></li>
+            <li class="active"><a href="/profile/explore">Explore</a></li>
 					</ul>
 				</div>
 			</div>
 		</nav>
-
-		<!-- Photostream -->
-		<% if (typeof photos != 'undefined' && photos.length > 0) { %>
-		<% for(var i = 0; i < photos.length; i++) { %>
-		<div class="image-container">
-			<div class="image-wrapper">
-				<a href="<%= photos[i].path %>">
-					<img src="<%= photos[i].path %>" />
-				</a>
-			</div>
-			<div class="image-meta">
-        <!-- Delete photo -->
-				<form action="/deletePhoto" method="post">
-					<input type="hidden" name="photo_id" value="<%= photos[i].id %>">
-					<input type="hidden" name="photo_caption" value="<%= photos[i].caption %>">
-					<input type="hidden" name="album_id" value="<%= photos[i].album_id %>">
-					<input type="submit" name="deletePhoto" value="Delete" class="btn btn-warning btn-sm">
-				</form>
-			</div>
-		</div>
-
-		<% } %>
-		<% } %>
 
 	</div>
 </body>

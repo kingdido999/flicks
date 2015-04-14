@@ -33,6 +33,7 @@ module.exports = function(app, passport) {
 	app.get('/profile/photos', isLoggedIn, profile.photos);
 	app.get('/profile/albums', isLoggedIn, profile.albums);
 	app.get('/profile/tags', isLoggedIn, profile.tags);
+	app.get('/profile/explore', isLoggedIn, profile.explore);
 	app.post('/deleteAlbum', isLoggedIn, profile.deleteAlbum);
 	app.post('/deletePhoto', isLoggedIn, profile.deletePhoto);
 	app.post('/addTags', isLoggedIn, profile.addTags);

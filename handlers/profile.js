@@ -141,4 +141,11 @@ module.exports = {
 			res.redirect('/profile/tags');
 		});
 	},
+
+  explore: function(req, res) {
+
+    res.render('profile/explore', {
+      user: req.session.user,
+    });
+  }
 }

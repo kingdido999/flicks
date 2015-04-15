@@ -155,19 +155,19 @@ module.exports = {
     var query = "\
       SELECT path\
       FROM Photo\
-      WHERE id IN\
+      WHERE owner_id != ? AND id IN\
       (\
         SELECT photo_id\
         FROM Tag\
         WHERE name IN\
         (\
-          SELECT T.name \
+          SELECT T.name\
           FROM Tag T, Photo P \
           WHERE T.photo_id = P.id AND P.owner_id = ?\
         )\
-      )\
-      LIMIT 5";
-    var params = [req.session.user.id];
+      )";
+
+    var params = [req.session.user.id, req.session.user.id];
 
     connection.query(query, params, function(err, rows) {
       if (err) throw err;
@@ -182,6 +182,6 @@ module.exports = {
   },
 
   recommendTags: function(req, res) {
-    
+
   }
 }

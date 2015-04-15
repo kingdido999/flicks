@@ -179,5 +179,9 @@ module.exports = {
         photos: rows
       });
     });
+  },
+
+  recommendTags: function(req, res) {
+    
   }
 }

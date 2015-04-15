@@ -45,6 +45,7 @@ module.exports = function(app, passport) {
 	app.get('/upload', isLoggedIn, upload.getUpload);
 	app.post('/upload', isLoggedIn, upload.postUpload);
 	app.post('/createAlbum', isLoggedIn, upload.createAlbum);
+	app.post('/recommendTags', isLoggedIn, upload.recommendTags);
 
 	// =====================================
 	// Photo ===============================

@@ -20,7 +20,8 @@ module.exports = {
 			if (err) throw err;
 
 			res.render('upload.ejs', {
-				albums: rows
+				albums: rows,
+        recommendTags: req.session.user.recommendTags
 			});
 		});
 	},
@@ -106,6 +107,51 @@ module.exports = {
 			});
 		}
 	},
+
+  recommendTags: function(req, res) {
+    var tags = req.body.tags.split(' ');
+
+    console.log(tags);
+    console.log(tags.length);
+
+    var questionMarks = '';
+
+    // add '?' tags.length times
+    for (var i = 0; i < tags.length; i++) {
+      questionMarks += '?';
+
+      if (i < tags.length - 1) {
+        questionMarks += ', ';
+      }
+    }
+
+    console.log(questionMarks);
+
+    var query = "\
+      SELECT name, COUNT(photo_id) as frequency\
+      FROM Tag\
+      WHERE name NOT IN (" + questionMarks + ") AND photo_id IN \
+      (\
+        SELECT P.id\
+        FROM Tag T, Photo P\
+        WHERE T.photo_id = P.id AND T.name IN (" + questionMarks + ")\
+      )\
+      GROUP BY name\
+      ORDER BY frequency DESC\
+      LIMIT 5";
+
+    var params = tags.concat(tags);
+
+    console.log(query);
+    console.log(params);
+    connection.query(query, params, function(err, rows) {
+      if (err) throw err;
+
+      console.log(rows);
+      req.session.user.recommendTags = rows;
+      res.redirect('/upload');
+    });
+  }
 }
 
 function rename(filename) {

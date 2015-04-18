@@ -1,6 +1,4 @@
-.image-large {
-
-}
+/* IMAGE */
 
 .image-large img {
   max-width: 100%;
@@ -27,14 +25,7 @@
 
 }
 
-.form-add-tags .form-control {
-	max-width: 240px;
-	display: inline;
-}
-
-.form-show-tagged-photos {
-  display: inline;
-}
+/* PHOTO PAGE */
 
 .photo-date {
   float: right;
@@ -62,4 +53,23 @@
 
 .comment-text {
   margin: 20px;
+}
+
+/* UPLOAD PAGE */
+
+.form-add-tags .form-control {
+	max-width: 240px;
+	display: inline;
+}
+
+/* PROFILE TAGS */
+
+.form-show-tagged-photos {
+  display: inline;
+}
+
+/* ALBUM PAGE */
+
+.album-name, .album-delete {
+  display: inline;
 }

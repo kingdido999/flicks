@@ -1,0 +1,125 @@
+<!-- views/profile/albums.ejs -->
+<!doctype html>
+<html>
+<head>
+	<title>Flicks</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<div class="container">
+
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+	    <div class="navbar-header">
+	      <a class="navbar-brand" href="/">Flicks</a>
+	    </div>
+	    <div>
+	      <ul class="nav navbar-nav">
+					<li><a href="/upload">Upload</a></li>
+					<li><a href="/friends">Friends</a></li>
+					<li class="active"><a href="/profile/photos">Profile</a></li>
+					<li><a href="/logout">Logout</a></li>
+	      </ul>
+				<p class="navbar-text navbar-right">Signed in as <a href="#" class="navbar-link"><%= user.email %></a></p>
+	    </div>
+		</div>
+	</nav>
+
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<div>
+				<ul class="nav navbar-nav">
+					<li><a href="/profile/photos">Photostream</a></li>
+					<li><a href="/profile/albums">Albums</a></li>
+					<li><a href="/profile/tags">Tags</a></li>
+					<li><a href="/profile/explore">Explore</a></li>
+          <li class="active"><a href="/profile/settings">Settings</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+    <!-- Update location -->
+    <form action="/updateLocation" method="post" class="form-inline">
+        <h4>Hometown</h4>
+        <div class="form-group">
+          <label>City</label>
+          <% if (typeof location == 'undefined' || typeof location.hometown_city == 'undefined') { %>
+            <input type="text" class="form-control" name="hometown_city">
+          <% } else { %>
+            <input type="text" class="form-control" name="hometown_city" value="<%= location.hometown_city %>">
+          <% } %>
+        </div>
+        <div class="form-group">
+          <label>State</label>
+          <% if (typeof location == 'undefined' || typeof location.hometown_state == 'undefined') { %>
+            <input type="text" class="form-control" name="hometown_state">
+          <% } else { %>
+            <input type="text" class="form-control" name="hometown_state" value="<%= location.hometown_state %>">
+          <% } %>
+        </div>
+        <div class="form-group">
+          <label>Country</label>
+          <% if (typeof location == 'undefined' || typeof location.hometown_country == 'undefined') { %>
+            <input type="text" class="form-control" name="hometown_country">
+          <% } else { %>
+            <input type="text" class="form-control" name="hometown_country" value="<%= location.hometown_country %>">
+          <% } %>
+        </div>
+
+        <h4>Current</h4>
+        <div class="form-group">
+          <label>City</label>
+          <% if (typeof location == 'undefined' || typeof location.current_city == 'undefined') { %>
+            <input type="text" class="form-control" name="current_city">
+          <% } else { %>
+            <input type="text" class="form-control" name="current_city" value="<%= location.current_city %>">
+          <% } %>
+        </div>
+        <div class="form-group">
+          <label>State</label>
+          <% if (typeof location == 'undefined' || typeof location.current_state == 'undefined') { %>
+            <input type="text" class="form-control" name="current_state">
+          <% } else { %>
+            <input type="text" class="form-control" name="current_state" value="<%= location.current_state %>">
+          <% } %>
+        </div>
+        <div class="form-group">
+          <label>Country</label>
+          <% if (typeof location == 'undefined' || typeof location.current_country == 'undefined') { %>
+            <input type="text" class="form-control" name="current_country">
+          <% } else { %>
+            <input type="text" class="form-control" name="current_country" value="<%= location.current_country %>">
+          <% } %>
+        </div>
+
+        <input type="submit" class="btn btn-primary" name="updateLocation" value="Update">
+    </form>
+
+    <!-- Update education -->
+    <h4>Education</h4>
+    <form action="/updateEducation" method="post" class="form-inline">
+      <div class="form-group">
+        <label>School</label>
+        <% if (typeof education == 'undefined' || typeof education.school == 'undefined') { %>
+          <input type="text" class="form-control" name="school">
+        <% } else { %>
+          <input type="text" class="form-control" name="school" value="<%= education.school %>">
+        <% } %>
+      </div>
+      <div class="form-group">
+        <label>Degree</label>
+        <% if (typeof education == 'undefined' || typeof education.degree == 'undefined') { %>
+          <input type="text" class="form-control" name="degree">
+        <% } else { %>
+          <input type="text" class="form-control" name="degree" value="<%= education.degree %>">
+        <% } %>
+      </div>
+      <input type="submit" class="btn btn-primary" name="updateEducation" value="Update">
+    </form>
+
+</div>
+</body>
+</html>

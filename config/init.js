@@ -26,12 +26,14 @@ CREATE TABLE User (                                           \
 
 connection.query('                                            \
 CREATE TABLE Location (                                       \
-    user_id           INT           NOT NULL,                 \
-    type              VARCHAR(20)   NOT NULL,                 \
-    city              VARCHAR(255)  NOT NULL,                 \
-    state             VARCHAR(255)  NOT NULL,                 \
-    country           VARCHAR(255)  NOT NULL,                 \
-    PRIMARY KEY (user_id, type),                              \
+    user_id                    INT           NOT NULL,        \
+    hometown_city              VARCHAR(255)  NOT NULL,        \
+    hometown_state             VARCHAR(255)  NOT NULL,        \
+    hometown_country           VARCHAR(255)  NOT NULL,        \
+    current_city               VARCHAR(255)  NOT NULL,        \
+    current_state              VARCHAR(255)  NOT NULL,        \
+    current_country            VARCHAR(255)  NOT NULL,        \
+    PRIMARY KEY (user_id),                                    \
     FOREIGN KEY (user_id)                                     \
       REFERENCES User(id)                                     \
       ON DELETE CASCADE                                       \

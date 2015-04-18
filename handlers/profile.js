@@ -63,6 +63,119 @@ module.exports = {
     });
   },
 
+  explore: function(req, res) {
+    var query = "\
+      SELECT path\
+      FROM Photo\
+      WHERE owner_id != ? AND id IN\
+      (\
+        SELECT photo_id\
+        FROM Tag\
+        WHERE name IN\
+        (\
+          SELECT T.name\
+          FROM Tag T, Photo P \
+          WHERE T.photo_id = P.id AND P.owner_id = ?\
+        )\
+      )";
+
+    var params = [req.session.user.id, req.session.user.id];
+
+    connection.query(query, params, function(err, rows) {
+      if (err) throw err;
+
+      console.log(rows);
+
+      res.render('profile/explore', {
+        user: req.session.user,
+        photos: rows
+      });
+    });
+  },
+
+  settings: function(req, res) {
+    var query = "SELECT * FROM Location WHERE user_id = ?";
+    var params = [req.session.user.id];
+
+    connection.query(query, params, function(err, location_results) {
+      if (err) throw err;
+
+      console.log(location_results[0]);
+
+      var educationQuery = "SELECT * FROM Education WHERE user_id = ?";
+      var educationParams = [req.session.user.id];
+
+      connection.query(educationQuery, educationParams, function(err, education_results) {
+        if (err) throw err;
+
+        console.log(education_results[0]);
+
+        res.render('profile/settings', {
+          user: req.session.user,
+          location: location_results[0],
+          education: education_results[0]
+        });
+      });
+    });
+  },
+
+  updateLocation: function(req, res) {
+    var location = req.body;
+
+    if (Object.keys(location).length > 0) {
+      var query = "\
+        INSERT INTO Location\
+        (user_id, hometown_city, hometown_state, hometown_country, current_city, current_state, current_country)\
+        VALUES (?, ?, ?, ?, ?, ?, ?)\
+        ON DUPLICATE KEY UPDATE\
+        hometown_city = VALUES(hometown_city),\
+        hometown_state = VALUES(hometown_state),\
+        hometown_country = VALUES(hometown_country),\
+        current_city = VALUES(current_city),\
+        current_state = VALUES(current_state),\
+        current_country = VALUES(current_country)";
+
+      var params = [
+        req.session.user.id,
+        location.hometown_city, location.hometown_state, location.hometown_country,
+        location.current_city, location.current_state, location.current_country
+      ];
+
+      connection.query(query, params, function(err, rows) {
+        if (err) throw err;
+
+        res.redirect('/profile/settings');
+      });
+    } else {
+      res.redirect('/profile/settings');
+    }
+  },
+
+  updateEducation: function(req, res) {
+    var education = req.body;
+
+    if (Object.keys(education).length > 0) {
+      var query = "\
+        INSERT INTO Education\
+        (user_id, school, degree)\
+        VALUES (?, ?, ?)\
+        ON DUPLICATE KEY UPDATE\
+        user_id = VALUES(user_id),\
+        school = VALUES(school),\
+        degree = VALUES(degree)";
+
+      var params = [req.session.user.id, education.school, education.degree];
+
+      connection.query(query, params, function(err, rows) {
+        if (err) throw err;
+
+        res.redirect('/profile/settings');
+      });
+    } else {
+      res.redirect('/profile/settings');
+    }
+  },
+
   deleteAlbum: function (req, res) {
 		var query = "\
 			DELETE FROM Album WHERE id = ?;\
@@ -141,45 +254,6 @@ module.exports = {
 			res.redirect('/profile/tags');
 		});
 	},
-
-  // Given the type of photos uploaded by a user we'd like to make some
-  // recommendations to them about other photos they may like.
-  //
-  // Take the five most commonly used tags among the user's photos.
-  // Perform a disjunctive search through all the photos for these five tags.
-  // A photo that contains all five tags should be ranked higher than one that
-  // contained four of the tags and so on. Between two photos that contain the
-  // same number of matched tags prefer the one that is more concise,
-  // i.e., the one that has fewer tags over all.
-  explore: function(req, res) {
-    var query = "\
-      SELECT path\
-      FROM Photo\
-      WHERE owner_id != ? AND id IN\
-      (\
-        SELECT photo_id\
-        FROM Tag\
-        WHERE name IN\
-        (\
-          SELECT T.name\
-          FROM Tag T, Photo P \
-          WHERE T.photo_id = P.id AND P.owner_id = ?\
-        )\
-      )";
-
-    var params = [req.session.user.id, req.session.user.id];
-
-    connection.query(query, params, function(err, rows) {
-      if (err) throw err;
-
-      console.log(rows);
-
-      res.render('profile/explore', {
-        user: req.session.user,
-        photos: rows
-      });
-    });
-  },
 
   recommendTags: function(req, res) {
 

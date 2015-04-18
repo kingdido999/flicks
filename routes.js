@@ -34,10 +34,13 @@ module.exports = function(app, passport) {
 	app.get('/profile/albums', isLoggedIn, profile.albums);
 	app.get('/profile/tags', isLoggedIn, profile.tags);
 	app.get('/profile/explore', isLoggedIn, profile.explore);
+	app.get('/profile/settings', isLoggedIn, profile.settings);
 	app.post('/deleteAlbum', isLoggedIn, profile.deleteAlbum);
 	app.post('/deletePhoto', isLoggedIn, profile.deletePhoto);
 	app.post('/addTags', isLoggedIn, profile.addTags);
 	app.post('/showUserTaggedPhotos', isLoggedIn, profile.showUserTaggedPhotos);
+	app.post('/updateLocation', isLoggedIn, profile.updateLocation);
+	app.post('/updateEducation', isLoggedIn, profile.updateEducation);
 
 	// =====================================
 	// UPLOAD ==============================

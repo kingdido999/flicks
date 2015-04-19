@@ -64,31 +64,58 @@ module.exports = {
   },
 
   explore: function(req, res) {
+    // take the five most commonly used tags among the user's photos
     var query = "\
-      SELECT path\
-      FROM Photo\
-      WHERE owner_id != ? AND id IN\
-      (\
-        SELECT photo_id\
-        FROM Tag\
-        WHERE name IN\
-        (\
-          SELECT T.name\
-          FROM Tag T, Photo P \
-          WHERE T.photo_id = P.id AND P.owner_id = ?\
-        )\
-      )";
+      SELECT T.name\
+      FROM Tag T, Photo P\
+      WHERE T.photo_id = P.id AND P.owner_id = ?\
+      GROUP BY T.name\
+      ORDER BY COUNT(*) DESC\
+      LIMIT 5";
 
-    var params = [req.session.user.id, req.session.user.id];
+    var params = [req.session.user.id];
 
-    connection.query(query, params, function(err, rows) {
+    connection.query(query, params, function(err, result_tags) {
       if (err) throw err;
 
-      console.log(rows);
+      var tags = [];
 
-      res.render('profile/explore', {
-        user: req.session.user,
-        photos: rows
+      for (var i = 0; i < result_tags.length; i++) {
+        tags.push(result_tags[i].name);
+      }
+
+      console.log(tags);
+
+      // perform a disjunctive search through all the photos for these five tags.
+      // A photo that contains all five tags should be ranked higher than one
+      // that contained four of the tags and so on. Between two photos that
+      // contain the same number of matched tags prefer the one that is more
+      // concise, i.e., the one that has fewer tags over all.
+      var photoQuery = "\
+        SELECT P.path, P.num_tags, COUNT(*) as frequency\
+        FROM Tag T, Photo P\
+        WHERE T.photo_id = P.id AND P.id != ? AND P.id IN\
+        (\
+          SELECT photo_id\
+          FROM Tag\
+          WHERE name IN (?, ?, ?, ?, ?)\
+        )\
+        AND T.name IN (?, ?, ?, ?, ?)\
+        GROUP BY P.id\
+        ORDER BY frequency DESC, P.num_tags";
+
+      var photoParams = tags.concat(tags);
+      photoParams.unshift(req.session.user.id);
+
+      connection.query(photoQuery, photoParams, function(err, result_photos) {
+        if (err) throw err;
+
+        console.log(result_photos);
+
+        res.render('profile/explore', {
+          user: req.session.user,
+          photos: result_photos
+        });
       });
     });
   },
@@ -208,7 +235,7 @@ module.exports = {
 
 			// delete the photo in the file system
 			fs.unlink(photoPath, function(err) {
-				if (err) throw err;
+				// if (err) throw err;
 
 				console.log('Photo deleted!');
 				res.redirect('/profile/photos');
@@ -254,8 +281,4 @@ module.exports = {
 			res.redirect('/profile/tags');
 		});
 	},
-
-  recommendTags: function(req, res) {
-
-  }
 }

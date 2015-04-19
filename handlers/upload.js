@@ -74,6 +74,11 @@ module.exports = {
 							tagParams.push(tags[i]);
 						}
 
+
+            tagQuery += "; UPDATE Photo SET num_tags = num_tags + ? WHERE id = ?";
+            tagParams.push(tags.length);
+            tagParams.push(photo_id);
+
 						connection.query(tagQuery, tagParams, function(err, rows) {
 								if (err) throw err;
 

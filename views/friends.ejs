@@ -25,9 +25,9 @@
 	  </div>
 	</nav>
 
-	<div class="row">
-		<h3>People you follow</h3>
-		<% if (typeof friends != 'undefined') { %>
+		<!-- Friend list -->
+		<% if (typeof friends != 'undefined' && friends.length > 0) { %>
+			<h3>People you follow</h3>
 			<ul>
 				<% for(var i = 0; i < friends.length; i++) { %>
 					<li>
@@ -36,9 +36,8 @@
 				<% } %>
 			</ul>
 		<% } %>
-	</div>
 
-	<div class="row">
+		<!-- Add friend -->
 		<h3>Add Friend: </h3>
 		<form action="/findUsers" method="post" class="form-inline">
 			<div class="form-group">
@@ -46,9 +45,8 @@
 			</div>
 			<input type="submit" class="btn btn-primary" value="Search">
 		</form>
-	</div>
 
-	<div class="row">
+		<!-- Show users that are not your friends -->
 		<% if (typeof users != 'undefined') { %>
 			<ul>
 				<% for(var i = 0; i < users.length; i++) { %>
@@ -62,8 +60,6 @@
 				<% } %>
 			</ul>
 		<% } %>
-	</div>
-
 
 
 </div>

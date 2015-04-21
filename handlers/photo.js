@@ -16,8 +16,12 @@ module.exports = {
 			WHERE id = ?";
 		var params = [photo_id];
 
+    console.log(photo_id);
+
 		connection.query(query, params, function(err, result_photo) {
 			if (err) throw err;
+
+      console.log(result_photo[0]);
 
       // check if user has signed in
       if (typeof req.session.user != 'undefined') {

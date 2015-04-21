@@ -92,7 +92,7 @@ module.exports = {
       // contain the same number of matched tags prefer the one that is more
       // concise, i.e., the one that has fewer tags over all.
       var photoQuery = "\
-        SELECT P.path, P.num_tags, COUNT(*) as frequency\
+        SELECT P.id, P.path, P.num_tags, COUNT(*) as frequency\
         FROM Tag T, Photo P\
         WHERE T.photo_id = P.id AND P.id != ? AND P.id IN\
         (\
@@ -267,7 +267,7 @@ module.exports = {
   showUserTaggedPhotos: function(req, res) {
 		var tag_name = req.body.tag_name;
 		var query = "\
-			SELECT P.path \
+			SELECT P.path, P.id \
 			FROM Photo P, Tag T \
 			WHERE P.id = T.photo_id \
 			AND P.owner_id = ? AND T.name = ?";

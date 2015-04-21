@@ -2,64 +2,64 @@
 <!doctype html>
 <html>
 <head>
-	<title>Flicks</title>
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
-	<link rel="stylesheet" href="/static/css/style.css">
+<title>Flicks</title>
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+<link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <div class="container">
+  <div class="container">
 
-			<nav class="navbar navbar-default">
-				<div class="container-fluid">
-					<div class="navbar-header">
-						<a class="navbar-brand" href="/">Flicks</a>
-					</div>
-					<div>
-						<% if (typeof user == 'undefined') { %>
-							<ul class="nav navbar-nav">
-								<li><a href="/login">Login</a></li>
-								<li><a href="/signup">Signup</a></li>
-							</ul>
-						<% } else { %>
-							<ul class="nav navbar-nav">
-								<li><a href="/upload">Upload</a></li>
-								<li><a href="/friends">Friends</a></li>
-								<li><a href="/profile/photos">Profile</a></li>
-								<li><a href="/logout">Logout</a></li>
-							</ul>
-							<p class="navbar-text navbar-right">Signed in as <a href="#" class="navbar-link"><%= user.email %></a></p>
-						<% }%>
-					</div>
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="/">Flicks</a>
 				</div>
-			</nav>
+				<div>
+					<% if (typeof user == 'undefined') { %>
+						<ul class="nav navbar-nav">
+							<li><a href="/login">Login</a></li>
+							<li><a href="/signup">Signup</a></li>
+						</ul>
+					<% } else { %>
+						<ul class="nav navbar-nav">
+							<li><a href="/upload">Upload</a></li>
+							<li><a href="/friends">Friends</a></li>
+							<li><a href="/profile/photos">Profile</a></li>
+							<li><a href="/logout">Logout</a></li>
+						</ul>
+						<p class="navbar-text navbar-right">Signed in as <a href="#" class="navbar-link"><%= user.email %></a></p>
+					<% }%>
+				</div>
+			</div>
+		</nav>
 
-      <nav class="navbar navbar-default">
-        <div class="container-fluid">
-          <div>
-            <ul class="nav navbar-nav">
-              <li class="active"><a href="/">Photostream</a></li>
-              <li><a href="/albums">Albums</a></li>
-			  <li><a href="/tags">Tags</a></li>
-			  <li><a href="/activity">Activity</a></li>
-            </ul>
-          </div>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div>
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/">Photostream</a></li>
+            <li><a href="/albums">Albums</a></li>
+		  <li><a href="/tags">Tags</a></li>
+		  <li><a href="/activity">Activity</a></li>
+          </ul>
         </div>
-      </nav>
+      </div>
+    </nav>
 
-				<% if (typeof photos != 'undefined' && photos.length > 0) { %>
-						<% for(var i = 0; i < photos.length; i++) { %>
-							<div class="image-container">
-								<div class="image-wrapper">
-									<a href="/photo?id=<%= photos[i].id %>">
-										<img src="<%= photos[i].path %>" />
-									</a>
-								</div>
+			<% if (typeof photos != 'undefined' && photos.length > 0) { %>
+					<% for(var i = 0; i < photos.length; i++) { %>
+						<div class="image-container">
+							<div class="image-wrapper">
+								<a href="/photo?id=<%= photos[i].id %>">
+									<img src="<%= photos[i].path %>" />
+								</a>
 							</div>
-						<% } %>
-				<% } %>
+						</div>
+					<% } %>
+			<% } %>
 
 
-    </div>
+  </div>
 </body>
 </html>

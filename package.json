@@ -1,11 +1,15 @@
 {
   "name": "flicks",
-  "version": "0.0.1",
+  "version": "0.1.0",
+  "author": "Pengcheng Ding",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"
   },
-  "author": "Pengcheng Ding",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kingdido999/flicks"
+  },
   "dependencies": {
     "express": "~3.4.4",
     "ejs": "~0.8.5",
@@ -14,5 +18,6 @@
     "connect-flash": "~0.1.1",
     "bcrypt-nodejs": "latest",
     "mysql": "*"
-  }
+  },
+  "license": "MIT"
 }

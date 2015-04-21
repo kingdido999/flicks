@@ -1,6 +1,8 @@
 # Flicks
 
-A picture sharing website running on Node.js + Express + MySQL.
+A picture sharing website running on Node.js + Express + MySQL + AWS.
+
+## [Demo](http://54.201.128.63:8080)
 
 ## Installation
 

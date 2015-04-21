@@ -86,37 +86,44 @@ module.exports = {
 
       console.log(tags);
 
-      // perform a disjunctive search through all the photos for these five tags.
-      // A photo that contains all five tags should be ranked higher than one
-      // that contained four of the tags and so on. Between two photos that
-      // contain the same number of matched tags prefer the one that is more
-      // concise, i.e., the one that has fewer tags over all.
-      var photoQuery = "\
-        SELECT P.id, P.path, P.num_tags, COUNT(*) as frequency\
-        FROM Tag T, Photo P\
-        WHERE T.photo_id = P.id AND P.owner_id != ? AND P.id IN\
-        (\
-          SELECT photo_id\
-          FROM Tag\
-          WHERE name IN (?, ?, ?, ?, ?)\
-        )\
-        AND T.name IN (?, ?, ?, ?, ?)\
-        GROUP BY P.id\
-        ORDER BY frequency DESC, P.num_tags";
+      // if user has less than 5 tags, we do not go to the explore page
+      if (tags.length < 5) {
+        res.redirect('profile/photos');
+      } else {
+        // perform a disjunctive search through all the photos for these five tags.
+        // A photo that contains all five tags should be ranked higher than one
+        // that contained four of the tags and so on. Between two photos that
+        // contain the same number of matched tags prefer the one that is more
+        // concise, i.e., the one that has fewer tags over all.
+        var photoQuery = "\
+          SELECT P.id, P.path, P.num_tags, COUNT(*) as frequency\
+          FROM Tag T, Photo P\
+          WHERE T.photo_id = P.id AND P.owner_id != ? AND P.id IN\
+          (\
+            SELECT photo_id\
+            FROM Tag\
+            WHERE name IN (?, ?, ?, ?, ?)\
+          )\
+          AND T.name IN (?, ?, ?, ?, ?)\
+          GROUP BY P.id\
+          ORDER BY frequency DESC, P.num_tags";
 
-      var photoParams = tags.concat(tags);
-      photoParams.unshift(req.session.user.id);
+        var photoParams = tags.concat(tags);
+        photoParams.unshift(req.session.user.id);
 
-      connection.query(photoQuery, photoParams, function(err, result_photos) {
-        if (err) throw err;
+        console.log(photoParams);
 
-        console.log(result_photos);
+        connection.query(photoQuery, photoParams, function(err, result_photos) {
+          if (err) throw err;
 
-        res.render('profile/explore', {
-          user: req.session.user,
-          photos: result_photos
+          console.log(result_photos);
+
+          res.render('profile/explore', {
+            user: req.session.user,
+            photos: result_photos
+          });
         });
-      });
+      }
     });
   },
 

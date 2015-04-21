@@ -7,36 +7,25 @@
 <body>
 <div class="container">
 
-<nav class="navbar navbar-default">
-	<div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="/">Flicks</a>
-    </div>
-    <div>
-      <ul class="nav navbar-nav">
-				<li><a href="/upload">Upload</a></li>
-				<li><a href="/friends">Friends</a></li>
-				<li class="active"><a href="/profile/photos">Profile</a></li>
-				<li><a href="/logout">Logout</a></li>
-      </ul>
-			<p class="navbar-text navbar-right">Signed in as <a href="#" class="navbar-link"><%= user.email %></a></p>
-    </div>
-	</div>
-</nav>
+	<header>
+		<% include ../partials/profile-header %>
+		
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div>
+					<ul class="nav navbar-nav">
+						<li><a href="/profile/photos">Photostream</a></li>
+						<li><a href="/profile/albums">Albums</a></li>
+		        <li class="active"><a href="/profile/tags">Tags</a></li>
+						<li><a href="/profile/explore">Explore</a></li>
+						<li><a href="/profile/settings">Settings</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
 
-<nav class="navbar navbar-default">
-	<div class="container-fluid">
-		<div>
-			<ul class="nav navbar-nav">
-				<li><a href="/profile/photos">Photostream</a></li>
-				<li><a href="/profile/albums">Albums</a></li>
-        <li class="active"><a href="/profile/tags">Tags</a></li>
-				<li><a href="/profile/explore">Explore</a></li>
-				<li><a href="/profile/settings">Settings</a></li>
-			</ul>
-		</div>
-	</div>
-</nav>
+
 
   <!-- Tags -->
   <% if (typeof tags != 'undefined' && tags.length > 0) { %>

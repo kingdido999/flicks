@@ -2,138 +2,145 @@
 <!doctype html>
 <html>
 <head>
-	<title>Flicks</title>
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
-	<link rel="stylesheet" href="/static/css/style.css">
+<title>Flicks</title>
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+<link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-	<div class="container">
+<div class="container">
 
-		<nav class="navbar navbar-default">
-			<div class="container-fluid">
-				<div class="navbar-header">
-					<a class="navbar-brand" href="/">Flicks</a>
-				</div>
-				<div>
-					<ul class="nav navbar-nav">
-						<% if (typeof user == 'undefined') { %>
-						<li><a href="/login">Login</a></li>
-						<li><a href="/signup">Signup</a></li>
-						<% } else { %>
-						<li><a href="/upload">Upload</a></li>
-						<li><a href="/friends">Friends</a></li>
-						<li><a href="/profile/photos">Profile</a></li>
-						<li><a href="/logout">Logout</a></li>
-						<% }%>
-					</ul>
-				</div>
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="/">Flicks</a>
 			</div>
-		</nav>
-
-
-		<% if (typeof photo != 'undefined') { %>
-
-		<!-- caption -->
-		<div class="photo-caption">
-			<h4><%= photo.caption %></h4>
-		</div>		
-
-		<!-- photo -->
-		<div class="image-large">
-			<a href="<%= photo.path %>">
-				<img src="<%= photo.path %>" />
-			</a>
-		</div>
-
-		<!-- date -->
-		<div class="photo-date">
-			<%= photo.date_of_creation %>
-		</div>
-
-		<!-- tags -->
-
-		<!-- number of likes -->
-		<div class="photo-num-likes">
-			<%= photo.num_likes %> likes:
-		</div>
-		<!-- liked user -->
-		<% if (typeof likedUser != 'undefined' && likedUser.length > 0) { %>
-		<div class="photo-liked-user">
-			<% for (var i = 0; i < likedUser.length; i++) { %> 
-				<%= likedUser[i].email %>
-				<% if (i < likedUser.length - 1) { %>,<% } %>
-			<% } %>
-		</div>
-		<% } %>
-		<!-- like this photo -->
-		<% if (typeof user != 'undefined') { %>
-		<div class="photo-like">
-			<!-- if user has not liked yet -->
-			<% if (!liked) { %>
-			<form action="/like" method="post">
-				<input type="hidden" name="photo_id" value="<%= photo.id %>">
-				<input type="hidden" name="user_id" value="<%= user.id %>">
-				<input type="submit" name="likePhoto" value="Like">
-			</form>
-			<% } else { %>
-			<form action="/unlike" method="post">
-				<input type="hidden" name="photo_id" value="<%= photo.id %>">
-				<input type="hidden" name="user_id" value="<%= user.id %>">
-				<input type="submit" name="unlikePhoto" value="Unlike">
-			</form>
-			<% } %>
-		</div>
-		<% } %>
-		<hr>
-
-		<!-- comments -->
-		<h2>Comments</h2>
-		<hr>
-		<% if (typeof comments != 'undefined' && comments.length > 0) { %>
-		<div class="comments">
-			<% for(var i = 0; i < comments.length; i++) { %>
-			<div class="comment">
-				<div class="comment-meta">
-					<div class="comment-author">
-						<%= comments[i].owner_email %>
-					</div>
-					<span>says: </span>
-					<div class="comment-date">
-						<%= comments[i].date_of_creation %>
-					</div>
-				</div>
-				<div class="comment-text">
-					<%= comments[i].text %>
-				</div>
+			<div>
+				<ul class="nav navbar-nav">
+					<% if (typeof user == 'undefined') { %>
+					<li><a href="/login">Login</a></li>
+					<li><a href="/signup">Signup</a></li>
+					<% } else { %>
+					<li><a href="/upload">Upload</a></li>
+					<li><a href="/friends">Friends</a></li>
+					<li><a href="/profile/photos">Profile</a></li>
+					<li><a href="/logout">Logout</a></li>
+					<% }%>
+				</ul>
 			</div>
-			<hr>
-			<% } %>
 		</div>
-		<% } %>
+	</nav>
 
-		<!-- leave a comment -->
-		<!-- users cannot leave comments for their own photos -->
-		<% if (typeof canComment != 'undefined' && canComment == true) { %>
-		<h2>Leave a comment</h2>
-		<form action="/addComment" method="post">
-			<% if (typeof user == 'undefined') { %>
-			<div class="form-group">
-				<label>Email</label>
-				<input type="email" name="author_email" value="" required>
-			</div>
-			<% } %>
+
+	<% if (typeof photo != 'undefined') { %>
+
+	<!-- caption -->
+	<div class="photo-caption">
+		<h4><%= photo.caption %></h4>
+	</div>
+
+	<!-- author -->
+
+	<!-- photo -->
+	<div class="image-large">
+		<a href="<%= photo.path %>">
+			<img src="<%= photo.path %>" />
+		</a>
+	</div>
+
+	<!-- date -->
+	<div class="date">
+		<%= photo.date_of_creation %>
+	</div>
+
+	<!-- tags -->
+
+	<!-- like this photo -->
+	<% if (typeof user != 'undefined') { %>
+	<div class="photo-like">
+		<!-- if user has not liked yet -->
+		<% if (!liked) { %>
+		<form action="/like" method="post">
 			<input type="hidden" name="photo_id" value="<%= photo.id %>">
-			<div class="form-group">
-				<input type="text" name="comment" value="" class="form-control" required>
-			</div>
-			<input type="submit" name="addComment" value="Submit">
+			<input type="hidden" name="user_id" value="<%= user.id %>">
+			<input type="submit" class="btn btn-info btn-xs" name="likePhoto" value="Like">
+		</form>
+		<% } else { %>
+		<form action="/unlike" method="post">
+			<input type="hidden" name="photo_id" value="<%= photo.id %>">
+			<input type="hidden" name="user_id" value="<%= user.id %>">
+			<input type="submit" class="btn btn-warning btn-xs" name="unlikePhoto" value="Unlike">
 		</form>
 		<% } %>
-
-		<% } %>
-
-
 	</div>
+	<% } %>
+
+	<% if (photo.num_likes > 0) { %>
+	<!-- number of likes -->
+	<div class="photo-num-likes">
+		<%= photo.num_likes %> likes:
+	</div>
+
+	<!-- liked user -->
+	<% if (typeof likedUser != 'undefined' && likedUser.length > 0) { %>
+	<div class="photo-liked-user">
+		<% for (var i = 0; i < likedUser.length; i++) { %>
+			<%= likedUser[i].email %>
+			<% if (i < likedUser.length - 1) { %>,<% } %>
+		<% } %>
+	</div>
+	<% } %>
+	<% } %>
+
+	<hr>
+
+	<!-- comments -->
+	<h4>Comments</h4>
+	<hr>
+	<% if (typeof comments != 'undefined' && comments.length > 0) { %>
+	<div class="comments">
+		<% for(var i = 0; i < comments.length; i++) { %>
+		<div class="comment">
+			<div class="comment-meta">
+				<div class="comment-author">
+					<%= comments[i].owner_email %>
+				</div>
+				<span>says: </span>
+				<div class="date">
+					<%= comments[i].date_of_creation %>
+				</div>
+			</div>
+			<div class="comment-text">
+				<%= comments[i].text %>
+			</div>
+		</div>
+		<hr>
+		<% } %>
+	</div>
+	<% } %>
+
+	<!-- leave a comment -->
+	<!-- users cannot leave comments for their own photos -->
+	<% if (typeof canComment != 'undefined' && canComment == true) { %>
+	<form action="/addComment" method="post">
+		<% if (typeof user == 'undefined') { %>
+		<div class="form-group">
+			<label>Email</label>
+			<input type="email" class="form-control" name="author_email" value="" required>
+		</div>
+		<% } %>
+		<input type="hidden" name="photo_id" value="<%= photo.id %>">
+		<div class="form-group">
+			<label for="comment">Leave a comment</label>
+			<textarea id="comment" class="form-control" name="comment" rows="8" cols="40" aria-describedby="form-allowed-tags" aria-required="true"></textarea>
+		</div>
+		<input type="submit" class="btn btn-primary" name="addComment" value="Submit">
+	</form>
+	<% } %>
+
+	<% } %>
+
+
+</div>
 </body>
 </html>

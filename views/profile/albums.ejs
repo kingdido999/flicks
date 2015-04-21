@@ -46,15 +46,12 @@
 			<% for(var i = 0; i < albums.length; i++) { %>
 				<ul>
 					<li>
-						<div class="album-name">
-							<%= albums[i].name %>
-						</div>
-						<div class="album-delete">
-							<form action="/deleteAlbum" method="post">
-								<input type="hidden" name="album_id" value="<%= albums[i].id %>">
-								<input type="submit" value="Delete" class="btn btn-warning btn-xs">
-							</form>
-						</div>
+						<%= albums[i].name %>
+						<!-- Delete button -->
+						<form action="/deleteAlbum" method="post" class="album-delete">
+							<input type="hidden" name="album_id" value="<%= albums[i].id %>">
+							<input type="submit" value="Delete" class="btn btn-warning btn-xs">
+						</form>
 					</li>
 				</ul>
 			<% } %>

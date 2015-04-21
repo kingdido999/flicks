@@ -1,11 +1,6 @@
-/* IMAGE */
-
-.image-large img {
-  max-width: 100%;
-}
+/* IMAGE PREVIEW */
 
 .image-container {
-  height: 260px;
   width: 300px;
   display: inline-block;
   margin: 5px;
@@ -27,8 +22,17 @@
 
 /* PHOTO PAGE */
 
-.photo-date {
+.image-large {
+  margin-bottom: 10px;
+}
+
+.image-large img {
+  max-width: 100%;
+}
+
+.date {
   float: right;
+  color: #888;
 }
 
 .photo-num-likes, .photo-liked-user {
@@ -47,16 +51,13 @@
   font-weight: bold;
 }
 
-.comment-date {
-  float: right;
-}
-
 .comment-text {
   margin: 20px;
 }
 
-/* UPLOAD PAGE */
-
+#comment {
+  font-size: 16px;
+}
 
 /* PROFILE TAGS */
 
@@ -66,6 +67,6 @@
 
 /* ALBUM PAGE */
 
-.album-name, .album-delete {
+.album-delete {
   display: inline;
 }

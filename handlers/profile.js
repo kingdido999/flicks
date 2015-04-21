@@ -94,7 +94,7 @@ module.exports = {
       var photoQuery = "\
         SELECT P.id, P.path, P.num_tags, COUNT(*) as frequency\
         FROM Tag T, Photo P\
-        WHERE T.photo_id = P.id AND P.id != ? AND P.id IN\
+        WHERE T.photo_id = P.id AND P.owner_id != ? AND P.id IN\
         (\
           SELECT photo_id\
           FROM Tag\

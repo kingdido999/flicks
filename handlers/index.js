@@ -62,7 +62,7 @@ module.exports = {
   showAllTaggedPhotos: function(req, res) {
 		var tag_name = req.body.tag_name;
 		var query = "\
-			SELECT P.path \
+			SELECT P.path, P.id \
 			FROM Photo P, Tag T \
 			WHERE P.id = T.photo_id AND T.name = ?";
 		var params = [tag_name];
